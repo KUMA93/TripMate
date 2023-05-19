@@ -1,7 +1,16 @@
 <template>
   <div id="nav">
   <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="/">EnjoyTrip</b-navbar-brand>
+    <b-navbar-brand href="/">
+      <router-link :to="{ name: 'main' }">
+          <b-img
+            :src="require('@/assets/img/logos/ssafy-text-logo.png')"
+            id="logo"
+            class="d-inline-block align-top"
+            alt="logo"
+          ></b-img>
+        </router-link>
+    </b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -14,34 +23,65 @@
         <b-nav-item><router-link class="nav-link" to="/notice">공지사항</router-link></b-nav-item>
       </b-navbar-nav>
 
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
+      <!-- after login -->
+      <b-navbar-nav class="ml-auto" v-if="userInfo">
+        <b-nav-item class="align-self-center">
+          <b-avatar variant="primary"></b-avatar>
+          {{ userInfo.name }}({{ userInfo.id }})님 환영합니다.
+        </b-nav-item>
+        <b-nav-item class="align-self-center">
+          <router-link :to="{ name: 'mypage' }" class="link align-self-center">내정보보기</router-link>
+        </b-nav-item>
+        <b-nav-item class="align-self-center link" @click.prevent="onClickLogout">로그아웃</b-nav-item>
+      </b-navbar-nav>
+      <!-- before login -->
+      <b-navbar-nav class="ml-auto" v-else>
         <b-nav-item-dropdown right>
-          <!-- Using 'button-content' slot -->
           <template #button-content>
-            <span>User</span>
-            <b-avatar variant="info"></b-avatar>
+            <b-icon icon="people" font-scale="2"></b-icon>
           </template>
-          <b-dropdown-item href="#">마이페이지</b-dropdown-item>
-          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="#">
+            <router-link :to="{ name: 'join' }" class="link">
+              <b-icon icon="person-circle"></b-icon> 회원가입
+            </router-link>
+          </b-dropdown-item>
+          <b-dropdown-item href="#">
+            <router-link :to="{ name: 'login' }" class="link"> <b-icon icon="key"></b-icon> 로그인 </router-link>
+          </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
-</div>
+  </div>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
+const UserStore = "UserStore"
+
 export default {
   name: 'NavBar',
   components: {},
   data() {
-    return {
-      message: '',
-    };
+    return {};
   },
+  computed: {
+    ...mapState(UserStore, ["isLogin", "userInfo"]),
+    ...mapGetters(["checkUserInfo"]),
+  },
+
   created() {},
-  methods: {},
+  methods: {
+      ...mapActions(UserStore, ["userLogout"]),
+      onClickLogout() {
+      console.log(this.userInfo.id);
+      this.userLogout(this.userInfo.id);
+      sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
+      sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+      if (this.$route.path != "/") this.$router.push({ name: "main" });
+    },
+  },
 };
 </script>
 

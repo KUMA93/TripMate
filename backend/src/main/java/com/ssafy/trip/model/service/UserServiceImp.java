@@ -1,9 +1,13 @@
 package com.ssafy.trip.model.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.trip.model.dao.UserDao;
@@ -14,63 +18,54 @@ import com.ssafy.trip.util.PasswordUtil;
 @Service
 public class UserServiceImp implements UserService {
 	
-	private UserDao dao;
-	
-	private UserServiceImp(UserDao dao) {
-		this.dao = dao;
-	}
-	
-	
-	@Override
-	public User login(String user_id, String pass) {
-		try {
-			User user = dao.search(user_id);
-			System.out.println(user);
-			if (user == null) 
-				throw new TripException("등록되지 않은 아이디입니다.");
-			
-			if (!PasswordUtil.verifyPassword(pass, user.getPass()))
-				throw new TripException("비밀번호가 틀렸습니다.");
-			
-			return user;
-		} catch (SQLException e) {
-			throw new TripException("로그인 처리 중 오류 발생");
-		}
-	}
-	
-	
-	@Override
-	public List<User> searchAll() {
-		try {
-			List<User> users = dao.searchAll();
-			return users;
-		} catch (SQLException e) {
-			throw new TripException("회원정보 검색 중 오류 발생");
-		}
-	}
 
+	@Autowired
+	private SqlSession sqlSession;
 
 	@Override
-	public User search(String user_id) {
-		try {
-			User user = dao.search(user_id);
-			return user;
-			
-		} catch (SQLException e) {
-			throw new TripException("회원정보 검색 중 오류 발생");
-		}
+	public User login(User user) throws Exception {
+		if (user.getId() == null || user.getPass() == null)
+			return null;
+		return sqlSession.getMapper(UserDao.class).login(user);
 	}
+
+	@Override
+	public User userInfo(String id) throws Exception {
+		return sqlSession.getMapper(UserDao.class).userInfo(id);
+	}
+
+	@Override
+	public void saveRefreshToken(String id, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", id);
+		map.put("token", refreshToken);
+		sqlSession.getMapper(UserDao.class).saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String id) throws Exception {
+		return sqlSession.getMapper(UserDao.class).getRefreshToken(id);
+	}
+
+	@Override
+	public void deleRefreshToken(String id) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id", id);
+		map.put("token", null);
+		sqlSession.getMapper(UserDao.class).deleteRefreshToken(map);
+	}
+	
 
 	@Override
 	public void regist(User user) {
 		try {
-			User find = dao.search(user.getId());
+			User find = sqlSession.getMapper(UserDao.class).search(user.getId());
 			
 			if (find != null) {
 				throw new TripException("이미 등록된 아이디입니다.");
 			}
 			
-			dao.regist(user);
+			sqlSession.getMapper(UserDao.class).regist(user);
 			
 			System.out.println("dao regist.............................");
 			
@@ -82,7 +77,7 @@ public class UserServiceImp implements UserService {
 	@Override
 	public void update(User user) {
 		try {
-			dao.update(user);
+			sqlSession.getMapper(UserDao.class).update(user);
 			
 		}catch (SQLException e) {
 			throw new TripException("회원정보 수정 중 오류 발생");
@@ -90,9 +85,9 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public void remove(String user_id) {
+	public void remove(String id) {
 		try {
-			dao.remove(user_id);
+			sqlSession.getMapper(UserDao.class).remove(id);
 		} catch (SQLException e) {
 			throw new TripException("회원정보 삭제 중 오류 발생");
 		}

@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import http from "@/api/http"
+import createPersistedState from "vuex-persistedstate";
+
+import UserStore from "@/store/modules/UserStore"
 
 Vue.use(Vuex)
 
@@ -55,6 +58,15 @@ export default new Vuex.Store({
     }
     ///////////////////////// Attraction End //////////////////////////////////
   },
+  ///////////////////////// JWT 활용을 위한 모듈 ///////////////////////////////
   modules: {
-  }
+    UserStore,
+  },
+  ///////////////////////// 토큰 저장을 위한 sessionStorage 활용 //////////////////////////
+  plugins: [
+    createPersistedState({
+      // 브라우저 종료시 제거하기 위해 localStorage가 아닌 sessionStorage로 변경. (default: localStorage)
+      storage: sessionStorage,
+    }),
+  ],
 })

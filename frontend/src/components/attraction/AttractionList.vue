@@ -1,14 +1,11 @@
 <template>
   <div>
-    <b-table-simple hover responsive
-      >
+    <b-table-simple class="trip-table" hover responsive>
       <b-thead>
         <b-tr>
           <b-th>대표이미지</b-th>
           <b-th>관광지명</b-th>
           <b-th>주소</b-th>
-          <!-- <th class="visually-hidden">위도</th>
-          <th class="visually-hidden">경도</th> -->
           <b-th></b-th>
         </b-tr>
       </b-thead>
@@ -47,4 +44,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.trip-table{
+  height: 50vh;
+  overflow-y: scroll;
+}
+</style>

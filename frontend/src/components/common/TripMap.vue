@@ -70,11 +70,11 @@ export default {
     },
     changeSize(size) {
       const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
+      container.style.width = `100vh`;
+      container.style.height = `${size}vh`;
       this.map.relayout();
     },
-    makeMarker() {
+    makeMarker() {      
       this.positions = [];
       this.attractions.forEach((attraction) => {
         let obj = {};
@@ -102,11 +102,24 @@ export default {
           map: this.map, // 마커를 표시할 지도
           position: position.latlng, // 마커를 표시할 위치
           title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          //   image: markerImage, // 마커의 이미지
+          // image: position.image, // 마커의 이미지
+          clickable: true,
         });
+
+        // var iwContent = `<div style="padding:5px;">${position.title}</div>`;
+        // var infowindow = new kakao.maps.InfoWindow({
+        //   content: iwContent
+        // });
+
+        // // 마커에 마우스오버 이벤트를 등록합니다
+        // kakao.maps.event.addListener(marker, 'click', function() {
+        //   // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+        //     infowindow.open(this.map, marker);
+        // });
+
         this.markers.push(marker);
+
       });
-      console.log("마커수 ::: " + this.markers.length);
 
       // 4. 지도를 이동시켜주기
       // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
@@ -116,8 +129,11 @@ export default {
       );
 
       this.map.setBounds(bounds);
+
+      
+
     },
-    displayInfoWindow() {
+    displayInfoWindow(marker) {
       if (this.infowindow && this.infowindow.getMap()) {
         //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
         this.map.setCenter(this.infowindow.getPosition());
@@ -125,7 +141,7 @@ export default {
       }
 
       var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
+        iwPosition = marker.position, //인포윈도우 표시 위치입니다
         iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
 
       this.infowindow = new kakao.maps.InfoWindow({
@@ -143,8 +159,8 @@ export default {
 
 <style scoped>
 #map {
-  width: 60vh;
-  height: 60vh;
+  width: 100%;
+  height: 50vh;
 }
 
 </style>

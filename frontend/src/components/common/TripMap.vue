@@ -7,11 +7,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: 'TripMap',
   components: {},
   data() {
     return {
+      map: null,
+      positions: [],
       markers: [],
       infowindow: null,
     };
@@ -19,32 +23,50 @@ export default {
   props: {
     attractions: [],
   },
-  created() {
-
+  computed: {
+    ...mapState(["mapCenter"])
   },
+  watch: {
+    attractions() {
+      // console.log("attractions", this.attractions);
+      this.displayMarker();
+    },
+    mapCenter() {
+      this.map.setCenter(new window.kakao.maps.LatLng(this.mapCenter.lat, this.mapCenter.lon));
+    },
+  },
+  created() {},
   mounted() {
     if (window.kakao && window.kakao.maps) {
-      this.initMap();
+      this.loadMap();
     } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=d247b5bcabc7cfb6552be7b927085bf0";
-      document.head.appendChild(script);
+      this.loadScript();
     }
   },
   methods: {
-    initMap() {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&autoload=false";
+      /* global kakao */
+      script.onload = () => window.kakao.maps.load(this.loadMap);
+
+      document.head.appendChild(script);
+    },
+    loadMap() {
+      console.log("mapCenter", this.mapCenter);
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(37.500613, 127.036431),
+        center: new window.kakao.maps.LatLng(this.mapCenter.lat, this.mapCenter.lon),
         level: 5,
       };
 
       //지도 객체를 등록합니다.
       //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-      this.map = new kakao.maps.Map(container, options);
+      this.map = new window.kakao.maps.Map(container, options);
+      this.displayMarker();
     },
     changeSize(size) {
       const container = document.getElementById("map");
@@ -52,31 +74,48 @@ export default {
       container.style.height = `${size}px`;
       this.map.relayout();
     },
-    displayMarker(markerPositions) {
+    makeMarker() {
+      this.positions = [];
+      this.attractions.forEach((attraction) => {
+        let obj = {};
+        obj.title = attraction.title;
+        obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+
+        this.positions.push(obj);
+      });
+    },
+    deleteMarker() {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
+    },
+    displayMarker() {
+      // 현재 지도에 표시된 marker 제거
+      this.deleteMarker();
 
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
+      // 마커를 생성합니다
+      this.makeMarker();
+
+      this.markers = [];
+      this.positions.forEach((position) => {
+        const marker = new kakao.maps.Marker({
+          map: this.map, // 마커를 표시할 지도
+          position: position.latlng, // 마커를 표시할 위치
+          title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          //   image: markerImage, // 마커의 이미지
+        });
+        this.markers.push(marker);
+      });
+      console.log("마커수 ::: " + this.markers.length);
+
+      // 4. 지도를 이동시켜주기
+      // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
+      const bounds = this.positions.reduce(
+        (bounds, position) => bounds.extend(position.latlng),
+        new kakao.maps.LatLngBounds()
       );
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
+      this.map.setBounds(bounds);
     },
     displayInfoWindow() {
       if (this.infowindow && this.infowindow.getMap()) {

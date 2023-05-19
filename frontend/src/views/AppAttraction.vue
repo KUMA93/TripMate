@@ -2,7 +2,7 @@
   <div>
     <the-header title="지역별 여행지"></the-header>
     <!-- 지도 -->
-    <trip-map :markers="attractions"></trip-map>
+    <trip-map :attractions="attractions"></trip-map>
     <!-- 검색 폼 -->
     <trip-search-form></trip-search-form>
     <!-- 검색 결과 List -->

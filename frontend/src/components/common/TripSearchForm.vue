@@ -62,21 +62,27 @@ export default {
   },
   watch: {
     sidoCode(val) {
+      console.log("sido", val);
       this.gugunOptions = [{ value: '0', text: '구군 선택' }];
       this.gugunCode = 0;
       if (val != 0) {
         this.getGugunOptions();
       }
-    }
+    },
   },
   methods: {
     ...mapActions(["searchAttraction"]),
     search() {
-      // console.log(this.contentType, this.sidoCode, this.gugunCode, this.word);
-      // this.searchAttraction(this.contentType, this.sidoCode, this.gugunCode, this.word);
+      console.log(this.contentType, this.sidoCode, this.gugunCode, this.word);
+      this.searchAttraction({
+        contentType: this.contentType,
+        sidoCode: this.sidoCode,
+        gugunCode: this.gugunCode,
+        word: this.word
+      });
     },
     getSidoOptions() {
-      const url = "https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=IyDyZIXXo%2BWZjmJd8PDtKfRUWVZo%2FU5zFQEdigo5N9XxA7Tr37KGeATt5O5XbwUBmA12hxIeuPtgKrgS%2Bd1luw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
+      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=${process.env.VUE_APP_TRIP_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json`;
       http.get(url)
         .then(({ data }) => {
           data.response.body.items.item.forEach((area) => {
@@ -90,7 +96,7 @@ export default {
     },
 
     getGugunOptions() {
-      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=IyDyZIXXo%2BWZjmJd8PDtKfRUWVZo%2FU5zFQEdigo5N9XxA7Tr37KGeATt5O5XbwUBmA12hxIeuPtgKrgS%2Bd1luw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=${this.sidoCode}`;
+      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=${process.env.VUE_APP_TRIP_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=${this.sidoCode}`;
       // console.log(url);
       http.get(url)
         .then(({ data }) => {

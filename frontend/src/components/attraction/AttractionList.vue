@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-table-simple hover responsive>
+    <b-table-simple hover responsive
+      >
       <b-thead>
         <b-tr>
           <b-th>대표이미지</b-th>
@@ -14,7 +15,7 @@
 
       <b-tbody id="trip-list">
           <attraction-list-item v-for="attraction in attractions" :key="attraction.contentId"
-            :attraction="attraction"></attraction-list-item>
+            :attraction="attraction" ></attraction-list-item>
       </b-tbody>
     </b-table-simple>
     
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import AttractionListItem from "./AttractionListItem.vue";
 
 export default {
@@ -40,7 +41,9 @@ export default {
   props: {    
   },
   created() { },
-  methods: {},
+  methods: {
+    ...mapActions(["setMapCenter"])
+  },
 };
 </script>
 

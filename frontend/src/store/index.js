@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     attractions: [],
     attraction: null,
+    mapCenter: { lat: 37.500613, lon: 127.036431 }
   },
   getters: {
     allAttractions(state) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     SET_ATTRACTION_DETAIL(state, attraction) {
       state.attraction = attraction;
     },
+    SET_MAP_CENTER(state, mapCenter) {
+      state.mapCenter = mapCenter;
+    }
     ///////////////////////// Attraction End ////////////////////////////////
   },
   actions: {
@@ -37,12 +41,20 @@ export default new Vuex.Store({
         })
     },
 
-    searchAttraction({ commit }, contentType, sidoCode, gugunCode, word) {
-      let url = `/rest/trip/search?contentType=${contentType}&sido=${sidoCode}&gugun=${gugunCode}&keyword=${word}`
+    searchAttraction({ commit }, payload) {
+      const searchParam = {
+        contentType: 0,
+        sidoCode: 0,
+        gugunCode: 0,
+        word: '',
+        ...payload
+      }
+
+      let url = `/rest/trip/search?contentType=${searchParam.contentType}&sido=${searchParam.sidoCode}&gugun=${searchParam.gugunCode}&keyword=${searchParam.word}`
       console.log("searchUrl", url);
       http.get(url)
         .then(({ data }) => {
-          // console.log(data);
+          console.log(data);
           commit("SET_ATTRACTION_LIST", data);
         })
         .catch(err => {
@@ -52,6 +64,10 @@ export default new Vuex.Store({
     
     setAttractionDetail({ commit }, attraction) {
       commit("SET_ATTRACTION_DETAIL", attraction);
+    },
+
+    setMapCenter({ commit }, lat, lon) {
+      commit("SET_MAP_CENTER", {lat: lat, lon: lon});
     }
     ///////////////////////// Attraction End //////////////////////////////////
   },

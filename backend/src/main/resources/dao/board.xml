@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.trip.model.dao.BoardDao">
+	
+	<resultMap type="boardDto" id="boardMap">
+		<id 	column="article_no" property="articleNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+
+	<sql id="searchCon">
+		<if test="word != null and word != ''">
+			<choose>
+				<when test=" key = 'user_id' ">
+					user_id like concat('%', #{word}, '%')
+				</when>
+				<when test=" key = 'subject' ">
+					subject like concat('%', #{word}, '%')
+				</when>
+				<when test=" key = 'content' ">
+					content like concat('%', #{word}, '%')
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
+	<insert id="insert" parameterType="boardDto">
+		insert into board (user_id, subject, content, hit, register_time)
+		values (#{userId}, #{subject}, #{content}, 0, now())
+	</insert>
+
+	<select id="searchAll" parameterType="PageBean" resultMap="boardMap">
+		select * from board
+		<where>
+			<include refid="searchCon"/>
+		</where>
+		limit #{start}, #{interval}
+	</select>
+	
+	<select id="search" parameterType="int" resultMap="boardMap">
+		select article_no, user_id, subject, content, hit, register_time 
+		from board
+		where article_no = #{articleNo}
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+	
+	<update id="update" parameterType="boardDto">
+		update board
+		set subject = #{subject}, content = #{content}
+		where article_no = #{articleNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from board
+		where article_no = #{articleNo}
+	</delete>
+	
+	<select id="totalCount" parameterType="PageBean" resultType="int">
+		select count(*) from board
+		<where>
+			<include refid="searchCon"/>
+		</where>
+	</select>
+</mapper>

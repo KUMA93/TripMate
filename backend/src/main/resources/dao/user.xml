@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace를 dao의 package를 포함한 interface 명과 동일하게 선언해야 함 -->
+<mapper namespace="com.ssafy.trip.model.dao.UserDao">
+	
+	<select id="searchAll" resultType="User">
+		select * from user
+	</select>
+	
+	<select id="search" parameterType="string" resultType="User">
+		select * from user where id=#{id}	
+	</select>
+	
+	<insert id="regist" parameterType="User">
+		insert into user (id, name, pass, email, position) 
+		values(#{id}, #{name}, #{pass}, #{email}, #{position})
+	</insert>
+	
+	<update id="update" parameterType="User">
+		update user set name=#{name}, email=#{email}, pass=#{pass} 
+		where id=#{id}
+	</update>
+	
+	<delete id="remove" parameterType="String">
+		delete from user where id=#{id}
+	</delete>
+
+</mapper>

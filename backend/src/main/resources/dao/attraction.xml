@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace를 dao의 package를 포함한 interface 명과 동일하게 선언해야 함 -->
+<mapper namespace="com.ssafy.trip.model.dao.AttractionDao">
+
+	<resultMap type="AttractionInfo" id="attractionInfoMap">
+		<id property="contentId" column="content_id" />
+		<result property="contentTypeId" column="content_type_id" />
+		<result property="title" column="title" />
+		<result property="addr1" column="addr1" />
+		<result property="addr2" column="addr2" />
+		<result property="zipcode" column="zipcode" />
+		<result property="tel" column="tel" />
+		<result property="first_image" column="first_image" />
+		<result property="first_image2" column="first_image2" />
+		<result property="readcount" column="readcount" />
+		<result property="sido_code" column="sido_code" />
+		<result property="gugun_code" column="gugun_code" />
+		<result property="latitude" column="latitude" />
+		<result property="longitude" column="longitude" />
+		<result property="mlevel" column="mlevel" />
+		<result property="overview" column="overview" />
+	</resultMap>
+
+	<sql id="searchCon">
+		<if test="contentTypeId != null and contentTypeId != 0">
+			AND content_type_id = #{contentTypeId}
+		</if>
+		<if test="sido_code != null and sido_code != 0">
+			AND sido_code = #{sido_code}
+		</if>
+		<if test="gugun_code != null and gugun_code != 0">
+			AND gugun_code = #{gugun_code}
+		</if>
+		<choose>
+			<when test="title != null and title != ''">
+				AND title like concat('%', #{title}, '%')
+				order by length(title)
+			</when>
+			<otherwise>
+				AND latitude between #{latitude} - 0.05 and #{latitude} + 0.05
+				and longitude between #{longitude} - 0.05 and #{longitude} + 0.05
+			</otherwise>
+		</choose>
+		
+	</sql>
+
+	<select id="getAllAttractionInfos" resultMap="attractionInfoMap"
+		parameterType="AttractionInfo">
+		select *
+		from attraction_info left join attraction_description
+		using (content_id)
+		<where>
+			<include refid="searchCon" />
+		</where>
+		limit 100
+	</select>
+
+</mapper>

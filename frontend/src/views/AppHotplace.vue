@@ -1,6 +1,7 @@
 <template>
   <div>
     <the-header title="핫플 자랑하기"></the-header>
+    <router-view></router-view>
   </div>
 </template>
 

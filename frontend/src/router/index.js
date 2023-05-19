@@ -123,6 +123,13 @@ const routes = [
     path: "/hotplace",
     name: "AppHotplace",
     component: AppHotplace,
+    children: [
+      {
+        path: "/list",
+        name: "HotPlaceList",
+        component: () => import("@/components/hotplace/HotPlaceList")
+      }
+    ]
   },
   {
     path: "/tripplan",

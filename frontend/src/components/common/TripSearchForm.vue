@@ -1,27 +1,21 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-2"></div> <!-- 여백 -->
-      <div class="col-2">
-        <b-form-select v-model="contentType" :options="options"></b-form-select>
-      </div>
-      <div class="col-4">
-        <b-form-input type="text" v-model="word"></b-form-input>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-primary" @click="search">검색</button>
-      </div>
-      <div class="col-2"></div> <!-- 여백 -->
+  <b-container class="bv-example-row mt-3 text-center">
+    <div class="input-group mb-1">
+      <label class="input-group-text" for="contentType">관광지 유형</label>
+      <b-form-select id="contentType" v-model="contentType" :options="options"></b-form-select>
     </div>
-    <div class="row">
-      <div class="col-2">
-        <b-form-select v-model="sidoCode" :options="sidoOptions"></b-form-select>
-      </div>
-      <div class="col-2">
-        <b-form-select v-model="gugunCode" :options="gugunOptions"></b-form-select>
-      </div>
+    <div class="input-group mb-1">
+      <label class="input-group-text" for="sidoCode">시/도</label>
+      <b-form-select id="sidoCode" v-model="sidoCode" :options="sidoOptions"></b-form-select>
+      <label class="input-group-text" for="gugunCode">구/군</label>
+      <b-form-select id="gugunCode" v-model="gugunCode" :options="gugunOptions"></b-form-select>
     </div>
-  </div>
+    <div class="input-group mb-1">
+      <label class="input-group-text" for="word">검색어</label>
+      <b-form-input type="text" id="word" v-model="word"></b-form-input>
+      <button class="btn btn-primary" @click="search">검색</button>
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -38,7 +32,7 @@ export default {
       gugunCode: 0,
       word: '',
       options: [
-        { value: '0', text: '선택하세요' },
+        { value: '0', text: '관광지 유형 선택' },
         { value: '12', text: '관광지' },
         { value: '14', text: '문화시설' },
         { value: '15', text: '축제/공연/행사' },
@@ -62,21 +56,27 @@ export default {
   },
   watch: {
     sidoCode(val) {
+      console.log("sido", val);
       this.gugunOptions = [{ value: '0', text: '구군 선택' }];
       this.gugunCode = 0;
       if (val != 0) {
         this.getGugunOptions();
       }
-    }
+    },
   },
   methods: {
     ...mapActions(["searchAttraction"]),
     search() {
-      // console.log(this.contentType, this.sidoCode, this.gugunCode, this.word);
-      // this.searchAttraction(this.contentType, this.sidoCode, this.gugunCode, this.word);
+      console.log(this.contentType, this.sidoCode, this.gugunCode, this.word);
+      this.searchAttraction({
+        contentType: this.contentType,
+        sidoCode: this.sidoCode,
+        gugunCode: this.gugunCode,
+        word: this.word
+      });
     },
     getSidoOptions() {
-      const url = "https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=IyDyZIXXo%2BWZjmJd8PDtKfRUWVZo%2FU5zFQEdigo5N9XxA7Tr37KGeATt5O5XbwUBmA12hxIeuPtgKrgS%2Bd1luw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json";
+      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=${process.env.VUE_APP_TRIP_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json`;
       http.get(url)
         .then(({ data }) => {
           data.response.body.items.item.forEach((area) => {
@@ -90,7 +90,7 @@ export default {
     },
 
     getGugunOptions() {
-      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=IyDyZIXXo%2BWZjmJd8PDtKfRUWVZo%2FU5zFQEdigo5N9XxA7Tr37KGeATt5O5XbwUBmA12hxIeuPtgKrgS%2Bd1luw%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=${this.sidoCode}`;
+      const url = `https://apis.data.go.kr/B551011/KorService1/areaCode1?serviceKey=${process.env.VUE_APP_TRIP_API_KEY}&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=${this.sidoCode}`;
       // console.log(url);
       http.get(url)
         .then(({ data }) => {

@@ -1,17 +1,34 @@
 <template>
   <div>
     <the-header title="지역별 여행지"></the-header>
-    <!-- 지도 -->
-    <trip-map :markers="attractions"></trip-map>
-    <!-- 검색 폼 -->
-    <trip-search-form></trip-search-form>
-    <!-- 검색 결과 List -->
-    <div v-if="attractions.length > 0">
-      <attraction-list></attraction-list>
-    </div>
-    <div v-else>
-      관광지 정보가 없습니다.
-    </div>
+    <b-container class="bv-example-row mt-3 text-center">
+      <b-row>
+        <b-col>
+          <!-- 검색 폼 -->
+          <trip-search-form></trip-search-form>
+        </b-col>
+      </b-row>
+      <b-row class="mt-3"></b-row>
+      <b-row>
+        <b-col>
+          <!-- 지도 -->
+          <trip-map :attractions="attractions"></trip-map>
+        </b-col>
+      </b-row>
+      <b-row class="mt-3"></b-row>
+      <b-row>
+        <b-col>
+          <!-- 검색 결과 List -->
+          <div v-if="attractions.length > 0">
+            <attraction-list></attraction-list>
+          </div>
+          <div v-else>
+            관광지 정보가 없습니다.
+          </div>
+
+        </b-col>
+      </b-row>
+    </b-container>
     <!-- 상세정보 Modal -->
     <attraction-modal></attraction-modal>
   </div>

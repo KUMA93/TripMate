@@ -24,21 +24,23 @@
 		<result property="overview" column="overview" />
 	</resultMap>
 
-	<sql id="searchCon">
+<sql id="searchCon">
 		<if test="contentTypeId != null and contentTypeId != 0">
 			AND content_type_id = #{contentTypeId}
 		</if>
-		<if test="sido_code != null and sido_code != 0">
-			AND sido_code = #{sido_code}
-		</if>
-		<if test="gugun_code != null and gugun_code != 0">
-			AND gugun_code = #{gugun_code}
-		</if>
+		
 		<choose>
 			<when test="title != null and title != ''">
 				AND title like concat('%', #{title}, '%')
 				order by length(title)
 			</when>
+			<when test="sido_code != null and sido_code != 0">
+				AND sido_code = #{sido_code}
+				<if test="gugun_code != null and gugun_code != 0">
+				AND gugun_code = #{gugun_code}
+				</if>
+			</when>
+			
 			<otherwise>
 				AND latitude between #{latitude} - 0.05 and #{latitude} + 0.05
 				and longitude between #{longitude} - 0.05 and #{longitude} + 0.05

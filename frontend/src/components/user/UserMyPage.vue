@@ -38,7 +38,7 @@
           <hr class="my-4" />
 
           <b-button variant="primary" class="mr-1" @click="updateHandler">정보수정</b-button>
-          <b-button variant="danger" @click="removeUser">회원탈퇴</b-button>
+          <b-button variant="danger" @click="withdraw">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -48,11 +48,13 @@
 
 <script>
 import { mapState } from "vuex";
+import http from '@/api/http'
 
 const UserStore = "UserStore";
 
 export default {
   name: "UserMyPage",
+
   components: {},
   computed: {
     ...mapState(UserStore, ["userInfo"]),
@@ -60,8 +62,13 @@ export default {
 
   methods: {
     updateHandler() {
+      this.$router.push({name:"update"})
+    },
+    withdraw() {
+      http.delete(`/rest/user/withdraw`, this.userInfo.id)
 
-      }
+      this.$router.push({name:"main"})
+    }
   },
 };
 

@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -173,35 +175,24 @@ public class UserRestController {
 //		return new ResponseEntity<Model>(model, HttpStatus.OK);
 //	}
 //	
-//	@ApiOperation(value="회원 탈퇴", notes="회원 ID에 해당하는 회원 정보를 삭제한다.")
-//	@DeleteMapping("/user")
-//	private ResponseEntity<String> remove(HttpSession session) {
-//		String id = getUser(session).getId();
-//		service.remove(id);
-//		session.invalidate();
-//		
-//		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//	}
-//	
-//	@ApiOperation(value="회원 정보 변경", notes="로그인 중인 회원의 이름, 이메일, 비밀번호를 변경한다.")
-//	@PutMapping("/user")
-//	private ResponseEntity<String> update(String user_name, String user_email, String nextPw, HttpSession session){
-//		User user = getUser(session);
-//		
-//		User next = new User(user.getId(), PasswordUtil.encryptPassword(nextPw), 
-//				user_name, user_email, user.getPosition(), user.getSido_code());
-//		service.update(next);
-//		session.invalidate();
-//		
-//		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//	}
-//
-//	private User getUser(HttpSession session) {
-//		User user = (User) session.getAttribute("userInfo");
-//		
-//		return user;
-//	}
-//	
+	@ApiOperation(value="회원 탈퇴", notes="회원 ID에 해당하는 회원 정보를 삭제한다.")
+	@DeleteMapping("/withdraw")
+	private ResponseEntity<String> remove(String id) {
+
+		userService.remove(id);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value="회원 정보 변경", notes="로그인 중인 회원의 이름, 이메일, 비밀번호를 변경한다.")
+	@PutMapping("/update")
+	private ResponseEntity<String> update(@RequestBody User user){
+		
+		userService.update(user);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
 	@ApiOperation(value="회원 가입", notes="입력 받은 정보로 회원가입을 한다.")
 	@PostMapping("/regist")
 	private ResponseEntity<String> regist(@RequestBody User user){

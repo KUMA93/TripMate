@@ -26,6 +26,7 @@ public class UserServiceImp implements UserService {
 	public User login(User user) throws Exception {
 		if (user.getId() == null || user.getPass() == null)
 			return null;
+		
 		return sqlSession.getMapper(UserDao.class).login(user);
 	}
 

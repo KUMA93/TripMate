@@ -24,10 +24,19 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User login(User user) throws Exception {
-		if (user.getId() == null || user.getPass() == null)
-			return null;
-		
-		return sqlSession.getMapper(UserDao.class).login(user);
+		try {
+			User originUser = sqlSession.getMapper(UserDao.class).search(user.getId());
+			if (user == null) 
+				throw new TripException("등록되지 않은 아이디입니다.");
+			
+			if (!PasswordUtil.verifyPassword(user.getPass(), originUser.getPass()))
+				throw new TripException("비밀번호가 틀렸습니다.");
+			
+			return user;
+		} catch (SQLException e) {
+			throw new TripException("로그인 처리 중 오류 발생");
+		}
+
 	}
 
 	@Override
@@ -93,5 +102,17 @@ public class UserServiceImp implements UserService {
 			throw new TripException("회원정보 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public User search(String id) {
+		try {
+			User user = sqlSession.getMapper(UserDao.class).search(id);;
+			return user;
+			
+		} catch (SQLException e) {
+			throw new TripException("회원정보 검색 중 오류 발생");
+		}
+	}
+
 
 }

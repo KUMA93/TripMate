@@ -41,8 +41,8 @@
 	</insert>
 	
 	<update id="update" parameterType="User">
-		update user set name=#{name}, email=#{email}, pass=#{pass} 
-		where id=#{id}
+		update user set name=#{name}, email=#{email}, pass=#{pass}
+		where id=#{id}	
 	</update>
 	
 	<delete id="remove" parameterType="String">

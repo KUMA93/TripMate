@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.trip.model.dto.BoardDto;
 import com.ssafy.trip.model.dto.User;
 import com.ssafy.trip.model.service.JwtServiceImpl;
 import com.ssafy.trip.model.service.UserService;
+import com.ssafy.trip.util.PasswordUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,8 +56,8 @@ public class UserRestController {
 		try {
 			User loginUser = userService.login(user);
 			if (loginUser != null) {
-				String accessToken = jwtService.createAccessToken("userid", loginUser.getId());// key, data
-				String refreshToken = jwtService.createRefreshToken("userid", loginUser.getId());// key, data
+				String accessToken = jwtService.createAccessToken("id", loginUser.getId());// key, data
+				String refreshToken = jwtService.createRefreshToken("id", loginUser.getId());// key, data
 				userService.saveRefreshToken(user.getId(), refreshToken);
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
@@ -130,7 +133,7 @@ public class UserRestController {
 		logger.debug("token : {}, memberDto : {}", token, user);
 		if (jwtService.checkToken(token)) {
 			if (token.equals(userService.getRefreshToken(user.getId()))) {
-				String accessToken = jwtService.createAccessToken("userid", user.getId());
+				String accessToken = jwtService.createAccessToken("id", user.getId());
 				logger.debug("token : {}", accessToken);
 				logger.debug("정상적으로 액세스토큰 재발급!!!");
 				resultMap.put("access-token", accessToken);
@@ -144,44 +147,69 @@ public class UserRestController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-//
-//	@ApiOperation(value="비밀번호 변경", notes="회원 ID에 해당하는 비밀번호를 변경한다.")
-//	@PutMapping("changepw/{id}")
-//	private ResponseEntity<String> updatePW(@PathVariable String id, String pw) {
-//		User user = service.search(id);
-//		
-//		user.setPass(PasswordUtil.encryptPassword(pw));
-//		service.update(user);
-//		
-//		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//	}
-//	
-//	@ApiOperation(value="비밀번호 찾기", notes="ID와 이메일에 해당하는 아이디가 있다면 리턴한다.")
-//	@GetMapping("/user/{id}/{email}")
-//	private ResponseEntity<Model> findPw(@PathVariable String id, @PathVariable String email, Model model) {
-//		User user = service.search(id);
-//		
-//		
-//		if (user == null) {
-//			model.addAttribute("msg", "등록되지 않은 id입니다.");
-//			return new ResponseEntity<Model>(model, HttpStatus.NO_CONTENT);
-//		}
-//		
-//		if (!email.equals(user.getEmail())) {
-//			model.addAttribute("msg", "이메일이 일치하지 않습니다.");
-//			return new ResponseEntity<Model>(model, HttpStatus.NO_CONTENT);
-//		}
-//		model.addAttribute("id", id);
-//		return new ResponseEntity<Model>(model, HttpStatus.OK);
-//	}
-//	
-	@ApiOperation(value="회원 탈퇴", notes="회원 ID에 해당하는 회원 정보를 삭제한다.")
-	@DeleteMapping("/withdraw")
-	private ResponseEntity<String> remove(String id) {
 
-		userService.remove(id);
+	@ApiOperation(value="비밀번호 변경", notes="회원 ID에 해당하는 비밀번호를 변경한다.")
+	@PutMapping("/changePw")
+	private ResponseEntity<String> updatePW(@RequestBody User user) {
+		
+		user.setPass(PasswordUtil.encryptPassword(user.getPass()));
+		userService.update(user);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@GetMapping("/search/{id}")
+	private ResponseEntity<?> search(@PathVariable("id") String id) {
+		User user = userService.search(id);
+		
+		if (user == null) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<User> (user, HttpStatus.OK);
+		}
+	}
+
+	@ApiOperation(value="비밀번호 찾기", notes="ID와 이메일에 해당하는 아이디가 있다면 리턴한다.")
+	@PostMapping("/findPw")
+	private ResponseEntity<?> findPw(@RequestBody User user) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		User originUser = userService.search(user.getId());
+		
+		if (originUser == null) {
+			status = HttpStatus.NO_CONTENT;
+			resultMap.put("message", "등록되지 않은 id입니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		}
+		
+		if (!user.getEmail().equals(originUser.getEmail())) {
+			status = HttpStatus.UNAUTHORIZED;
+			resultMap.put("message", "이메일이 일치하지 않습니다.");
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		}
+		
+		status = HttpStatus.OK;
+		
+		return new ResponseEntity<String>(SUCCESS, status);
+	}
+	
+	@ApiOperation(value="회원 탈퇴", notes="회원 ID에 해당하는 회원 정보를 삭제한다.")
+	@DeleteMapping("/remove/{id}")
+	private ResponseEntity<?> remove(@PathVariable("id") String id) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			userService.deleRefreshToken(id);
+			userService.remove(id);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("회원 탈퇴 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	@ApiOperation(value="회원 정보 변경", notes="로그인 중인 회원의 이름, 이메일, 비밀번호를 변경한다.")
@@ -198,7 +226,8 @@ public class UserRestController {
 	private ResponseEntity<String> regist(@RequestBody User user){
 		user.setPosition("user");
 		user.setSido_code(12);
-		
+		String newPw =  PasswordUtil.encryptPassword(user.getPass());
+		user.setPass(newPw);
 		userService.regist(user);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

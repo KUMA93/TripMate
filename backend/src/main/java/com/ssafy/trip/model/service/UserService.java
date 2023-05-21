@@ -15,4 +15,5 @@ public interface UserService {
 	public void regist(User user) ;
 	public void update(User user) ;
 	public void remove(String user_id) ;
+	public User search(String id) ;
 }

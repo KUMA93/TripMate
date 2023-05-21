@@ -38,7 +38,7 @@
           <hr class="my-4" />
 
           <b-button variant="primary" class="mr-1" @click="updateHandler">정보수정</b-button>
-          <b-button variant="danger" @click="withdraw">회원탈퇴</b-button>
+          <b-button variant="danger" @click.prevent="onClickWithdraw">회원탈퇴</b-button>
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -47,8 +47,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import http from '@/api/http'
+import { mapActions, mapState, mapGetters } from "vuex";
 
 const UserStore = "UserStore";
 
@@ -57,17 +56,25 @@ export default {
 
   components: {},
   computed: {
-    ...mapState(UserStore, ["userInfo"]),
+    ...mapState(UserStore, ["isLogin", "userInfo"]),
+    ...mapGetters(["checkUserInfo"]),
   },
 
   methods: {
+    ...mapActions(UserStore, ["userWithdraw"]),
     updateHandler() {
       this.$router.push({name:"update"})
     },
-    withdraw() {
-      http.delete(`/rest/user/withdraw`, this.userInfo.id)
-
-      this.$router.push({name:"main"})
+    onClickWithdraw() {
+      if (confirm("정말 탈퇴 하시겠습니까?") == true){//확인
+        this.userWithdraw(this.userInfo.id)
+        sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
+        sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+        alert("탈퇴가 완료되었습니다.");
+        this.$router.push({name:"main"})
+      }else{//취소
+        return;
+      }      
     }
   },
 };

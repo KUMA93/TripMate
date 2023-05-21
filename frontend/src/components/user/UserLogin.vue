@@ -11,9 +11,9 @@
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
             <b-alert show variant="danger" v-if="isLoginError">아이디 또는 비밀번호를 확인하세요.</b-alert>
-            <b-form-group label="아이디:" label-for="userid">
+            <b-form-group label="아이디:" label-for="id">
               <b-form-input
-                id="userid"
+                id="id"
                 v-model="user.id"
                 required
                 placeholder="아이디 입력...."
@@ -29,6 +29,9 @@
                 placeholder="비밀번호 입력...."
                 @keyup.enter="confirm"
               ></b-form-input>
+            </b-form-group>
+            <b-form-group label="" label-for="findPw">
+              <router-link :to="{ name: 'findPw'}" class="link">비밀번호를 잊으셨나요?</router-link>
             </b-form-group>
             <b-button type="button" variant="primary" class="m-1" @click="confirm">로그인</b-button>
             <b-button type="button" variant="success" class="m-1" @click="movePage">회원가입</b-button>

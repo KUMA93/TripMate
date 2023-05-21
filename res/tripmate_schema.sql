@@ -149,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`user` (
   `name` VARCHAR(20) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `position` VARCHAR(30) NOT NULL DEFAULT 'user',
+  `token` VARCHAR(1000) DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4

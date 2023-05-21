@@ -10,9 +10,9 @@
       <b-col cols="8">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
-            <b-form-group label="아이디:" label-for="userid">
+            <b-form-group label="아이디:" label-for="id">
               <b-form-input
-                id="userid"
+                id="id"
                 ref="id"
                 v-model="user.id"
                 required
@@ -103,14 +103,19 @@ export default {
 
       !this.user.id &&
         ((msg = "아이디를 입력해주세요"), (err = true), this.$refs.id.focus())
-      !err & this.user.pass &&
+      !err & this.user.pass.length==0 &&
         ((msg = "비밀번호를 입력해주세요"), (err = true), this.$refs.pass.focus())
-      !err & this.passwordCheck &&
+      !err & this.passwordCheck.length==0 &&
         ((msg = "비밀번호확인을 입력해주세요"), (err = true), this.$refs.pwch.focus())
       !err & this.user.name &&
         ((msg = "이름을 입력해주세요"), (err = true), this.$refs.name.focus())
       !err & this.user.email &&
         ((msg = "이메일을 입력해주세요"), (err = true), this.$refs.email.focus())
+      if (!this.pwFlag){
+        msg = "비밀번호가 일치하지 않습니다."
+        err = true
+        this.$refs.pwch.focus()
+      }
       if (err) {
         alert(msg);
       } else {

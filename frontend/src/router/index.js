@@ -73,12 +73,16 @@ const routes = [
         beforeEnter: onlyAuthUser,
         component: () => import(/* webpackChunkName: "user" */ "@/components/user/UserUpdate"),
       },
-      // {
-      //   path: "update",
-      //   name: "update",
-      //   beforeEnter: onlyAuthUser,
-      //   component: () => import(/* webpackChunkName: "user" */ "@/components/user/UserUpdate"),
-      // },
+      {
+        path: "findPw",
+        name: "findPw",
+        component: () => import(/* webpackChunkName: "user" */ "@/components/user/UserFindPw"),
+      },
+      {
+        path: "changePw/:id",
+        name: "changePw",
+        component: () => import(/* webpackChunkName: "user" */ "@/components/user/UserChangePw"),
+      },
     ]
   },
   {
@@ -95,6 +99,7 @@ const routes = [
       {
         path: "write",
         name: "BoardWrite",
+        beforeEnter: onlyAuthUser,
         component: () => import(/* webpackChunkName: "board" */ "@/components/board/BoardWrite"),
       },
       {

@@ -78,13 +78,14 @@ public class BoardServiceImp implements BoardService {
 	@Override
 	public List<BoardDto> searchAll(PageBean bean) {
 		try {
+			List<BoardDto> first = dao.searchAll(bean);
 			int total = dao.totalCount(bean);
 			bean.setTotal(total);
 			
 			PageUtility page = new PageUtility(bean.getInterval(), total, bean.getPageNo(), "");
 			bean.setPageLink(page.getPageBar());
 			
-			return dao.searchAll(bean);
+			return first;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TripException("게시글 목록 정보를 조회 하는 중 오류 발생!!!");

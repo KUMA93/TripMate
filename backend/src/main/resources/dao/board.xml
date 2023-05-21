@@ -16,13 +16,13 @@
 	<sql id="searchCon">
 		<if test="word != null and word != ''">
 			<choose>
-				<when test=" key = 'user_id' ">
+				<when test=" key == 'userId' ">
 					user_id like concat('%', #{word}, '%')
 				</when>
-				<when test=" key = 'subject' ">
+				<when test=" key == 'subject' ">
 					subject like concat('%', #{word}, '%')
 				</when>
-				<when test=" key = 'content' ">
+				<when test=" key == 'content' ">
 					content like concat('%', #{word}, '%')
 				</when>
 			</choose>
@@ -39,6 +39,7 @@
 		<where>
 			<include refid="searchCon"/>
 		</where>
+		order by article_no desc 
 		limit #{start}, #{interval}
 	</select>
 	

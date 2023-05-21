@@ -6,7 +6,7 @@
                 <b-form-select  v-model="key"   :options="keys"></b-form-select>
             </div>
             <div class="col-4">
-                <b-form-input   v-model="word"/>
+                <b-form-input   v-model="word" @keyup.enter="searchArticle" />
             </div>
             <div class="col-2">
                 <b-button variant="primary"  @click="searchArticle">검색</b-button>
@@ -14,7 +14,13 @@
             </div>
             <div class="col-2"></div>
         </div>
-        <b-table id='BoardList' hover striped :items="articles" :fields="fields" @row-clicked="goDetail"></b-table>
+        <b-table id='BoardList' hover striped :items="articles" :fields="fields" @row-clicked="goDetail">
+          <template #cell(subject)="data">
+            <router-link :to="{ name: 'BoardView', params: { articleNo: data.item.articleNo } }">
+              {{ data.item.subject }}
+            </router-link>
+          </template>
+        </b-table>
         <b-pagination       pills  align='center'
                             v-model="pageNo"  
                             :total-rows="total"
@@ -68,7 +74,7 @@ created() {
     },
     
   searchArticle() {
-    http.get(`rest/board?pageNo=${this.pageNo}&word=${ this.word }&key=${this.key}`)
+    http.get(`rest/board?pageNo=${ this.pageNo }&word=${ this.word }&key=${ this.key }`)
       .then(response => {
         console.log(response.data)
         if (response.data.articles) {

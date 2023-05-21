@@ -18,4 +18,8 @@ async function logout(id, success, fail) {
 await http.get(`/rest/user/logout/${id}`).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout };
+async function remove(id, success, fail) {
+await http.delete(`/rest/user/remove/${id}`).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, remove };

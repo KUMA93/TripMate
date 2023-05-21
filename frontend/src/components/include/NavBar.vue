@@ -71,7 +71,10 @@ export default {
     ...mapGetters(["checkUserInfo"]),
   },
 
-  created() {},
+  created() {
+
+    console.log(this.userInfo)
+  },
   methods: {
       ...mapActions(UserStore, ["userLogout"]),
       onClickLogout() {

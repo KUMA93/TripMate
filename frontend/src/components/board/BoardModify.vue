@@ -8,13 +8,15 @@
         <th>제목</th><td><input type="text" id="subject" refs="subject" v-model="article.subject"/></td>
       </tr>
       <tr>
-        <th>작성자</th><td id="userId" v-text="article.userId"></td>
+        <th>작성자</th><td><input type="text" id="userId" v-text="article.userId"/></td>
       </tr>
       <tr>
         <th colspan="2">내용</th>
       </tr>
       <tr>
-        <th colspan="2"><pre><input type="text" id="content" refs="content" v-model="article.content"/></pre></th>
+        <td colspan="2">
+        <textarea id="content" cols="46" rows="10" ref="content" v-model="article.content"></textarea>
+        </td>
       </tr>
       <tr>
         <td colspan="2">

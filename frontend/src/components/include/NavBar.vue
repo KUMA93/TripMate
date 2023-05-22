@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-  <b-navbar toggleable="lg" type="dark" variant="info">
+  <b-navbar toggleable="lg" type="light" variant="faded">
     <b-navbar-brand href="/">
       <router-link :to="{ name: 'main' }">
           <b-img

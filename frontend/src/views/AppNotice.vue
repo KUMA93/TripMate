@@ -1,6 +1,7 @@
 <template>
   <div>
     <the-header title="공지사항"></the-header>
+    <router-view></router-view>
   </div>
 </template>
 

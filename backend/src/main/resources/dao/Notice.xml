@@ -4,7 +4,7 @@
 
 <mapper namespace="com.ssafy.trip.model.dao.NoticeDao">
 	
-	<resultMap type="NoticeDto" id="noticeMap">
+	<resultMap type="noticeDto" id="noticeMap">
 		<id 	column="article_no" property="articleNo"/>
 		<result column="user_id" property="userId"/>
 		<result column="subject" property="subject"/>
@@ -13,7 +13,7 @@
 		<result column="register_time" property="registerTime"/>
 	</resultMap>
 
-	<insert id="insert" parameterType="NoticeDto">
+	<insert id="insert" parameterType="noticeDto">
 		insert into notice (user_id, subject, content, hit, register_time)
 		values (#{userId}, #{subject}, #{content}, 0, now())
 	</insert>
@@ -36,7 +36,7 @@
 		where article_no = #{articleNo}
 	</update>
 	
-	<update id="update" parameterType="NoticeDto">
+	<update id="update" parameterType="noticeDto">
 		update notice
 		set subject = #{subject}, content = #{content}
 		where article_no = #{articleNo}

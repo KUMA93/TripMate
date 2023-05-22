@@ -2,7 +2,7 @@
   <div><div>
     <table class="table table-bordered">
       <tr>
-        <th>게시글 번호</th><td id="articleNo" v-text="article.articleNo"></td>
+        <th>공지 번호</th><td id="articleNo" v-text="article.articleNo"></td>
       </tr>
       <tr>
         <th>제목</th><td><input type="text" id="subject" refs="subject" v-model="article.subject"/></td>
@@ -45,7 +45,7 @@ export default {
 },
 created() {
   this.articleNo = this.$route.query.articleNo;
-  http.get(`rest/board/${this.articleNo}`)
+  http.get(`rest/notice/${this.articleNo}`)
     .then(({ data }) => { 
       console.log(data)
       this.article = data;
@@ -57,7 +57,7 @@ created() {
 },
 methods: {
   moveHandler() {
-    this.$router.push({name:'BoardList'})
+    this.$router.push({name:'NoticeList'})
   },
   updateHandler() {
     let err = false;
@@ -69,7 +69,7 @@ methods: {
       if (err) {
         alert(msg);
       } else {
-      http.put('rest/board', this.article)
+      http.put('rest/notice', this.article)
         .then(({ data }) => { 
           if (data == 'success') { 
             alert("수정 완료");

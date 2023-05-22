@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,6 @@ import com.ssafy.trip.model.dto.NoticeDto;
 import com.ssafy.trip.model.dto.PageBean;
 import com.ssafy.trip.model.service.NoticeService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/rest/notice")
@@ -67,15 +67,16 @@ public class NoticeRestController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> regist(@RequestBody NoticeDto noticeDto) {
-		noticeService.insert(noticeDto);
+	public ResponseEntity<String> regist(@RequestBody NoticeDto article) {
+		logger.debug("=============공지 등록 ============={}", article);
+		noticeService.insert(article);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 	
 	@PutMapping
-	public ResponseEntity<String> update(@RequestBody NoticeDto noticeDto) {
-		noticeService.update(noticeDto);
+	public ResponseEntity<String> update(@RequestBody NoticeDto article) {
+		noticeService.update(article);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}

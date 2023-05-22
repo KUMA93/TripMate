@@ -121,8 +121,36 @@ const routes = [
   },
   {
     path: "/notice",
-    name: "AppNotice",
+    name: "notice",
     component: AppNotice,
+    redirect: "/notice/list",
+    children: [
+      {
+        path: "list",
+        name: "NoticeList",
+        component: () => import(/* webpackChunkName: "notice" */ "@/components/notice/NoticeList"),
+      },
+      {
+        path: "write",
+        name: "NoticeWrite",
+        component: () => import(/* webpackChunkName: "notice" */ "@/components/notice/NoticeWrite"),
+      },
+      {
+        path: "view/:articleNo",
+        name: "NoticeView",
+        component: () => import(/* webpackChunkName: "notice" */ "@/components/notice/NoticeView"),
+      },
+      {
+        path: "modify",
+        name: "NoticeModify",
+        component: () => import(/* webpackChunkName: "notice" */ "@/components/notice/NoticeModify"),
+      },
+      {
+        path: "delete",
+        name: "NoticeDelete",
+        component: () => import(/* webpackChunkName: "notice" */ "@/components/notice/NoticeDelete"),
+      },
+    ]
   },
   {
     path: "/hotplace",

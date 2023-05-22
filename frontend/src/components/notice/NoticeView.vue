@@ -2,7 +2,7 @@
   <div><div>
     <table class="table table-bordered">
       <tr>
-        <th>게시글 번호</th><td v-text="article.articleNo"></td>
+        <th>공지 번호</th><td v-text="article.articleNo"></td>
       </tr>
       <tr>
         <th>제목</th><td v-text="article.subject"></td>
@@ -23,7 +23,7 @@
         <td colspan="2">
         <div >
           <button class="btn btn-primary" @click="moveHandler">목록</button>
-          <button class="btn btn-primary" @click="updateHandler" v-if="userInfo && userInfo.id == article.userId">수정</button>
+          <button class="btn btn-primary" @click="updateHandler">수정</button>
           <button class="btn btn-primary" @click="removeHandler" v-if="userInfo && (userInfo.id == article.userId || userInfo.position == 'admin')">삭제</button>
         </div>
         </td>
@@ -47,7 +47,7 @@ export default {
   },
   created() {
     this.articleNo = this.$route.params.articleNo;
-    this.boardDetail()
+    this.noticeDetail()
   },
 
   computed: {
@@ -56,8 +56,8 @@ export default {
   },
 
 methods: {
-  boardDetail() {
-    http.get(`rest/board/${this.articleNo}`)
+  noticeDetail() {
+    http.get(`rest/notice/${this.articleNo}`)
       .then(({data}) => {
         console.log(data)
         this.article = data;
@@ -68,13 +68,13 @@ methods: {
   },
 
   moveHandler() {
-    this.$router.push({name:"BoardList"})
+    this.$router.push({name:"NoticeList"})
   },
   updateHandler() {
-    this.$router.push({name:"BoardModify", query: {articleNo:this.articleNo}})
+    this.$router.push({name:"NoticeModify", query: {articleNo:this.articleNo}})
   },
   removeHandler() {
-    http.delete(`rest/board?articleNo=${this.articleNo}`)
+    http.delete(`rest/notice?articleNo=${this.articleNo}`)
     //   .then(response => {
     //     console.log(response)
     // })

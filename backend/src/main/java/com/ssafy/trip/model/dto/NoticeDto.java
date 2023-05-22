@@ -8,8 +8,6 @@ public class NoticeDto {
 	private String content;
 	private int hit;
 	private String registerTime;
-	
-	public NoticeDto() {}
 
 	public int getArticleNo() {
 		return articleNo;

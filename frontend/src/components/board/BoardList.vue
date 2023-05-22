@@ -49,7 +49,8 @@ data() {
     fields: [
                 { key: 'articleNo',  label: '게시글 번호' },
                 { key: 'subject', label: '제목' },
-                { key: 'userId',label: '작성자' },
+                { key: 'userId', label: '작성자' },
+                { key: 'registerTime',label: '작성 시간' },
                 { key: 'hit', label: '조회수' },
             ],
     pageNo: '1',

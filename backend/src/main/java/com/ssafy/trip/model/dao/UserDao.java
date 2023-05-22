@@ -4,9 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.ssafy.trip.model.dto.User;
 
-
+@Repository
 public interface UserDao {
 
 	public User login(User user) throws SQLException;

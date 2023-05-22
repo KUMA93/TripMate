@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,32 +17,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.trip.model.dto.BoardDto;
+import com.ssafy.trip.model.dto.HotplaceDto;
 import com.ssafy.trip.model.dto.PageBean;
-import com.ssafy.trip.model.service.BoardService;
+import com.ssafy.trip.model.service.HotplaceService;
 
 @RestController
-@RequestMapping("/rest/board")
+@RequestMapping("/rest/hotplace")
 @CrossOrigin("*")
-public class BoardRestController {
+public class HotplaceRestController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BoardRestController.class);
+	private static final Logger logger = LoggerFactory.getLogger(HotplaceRestController.class);
 	private static final String SUCCESS = "success";
 	
 	@Autowired
-	private BoardService boardService;
+	private HotplaceService hotplaceService;
 
-	public BoardRestController(BoardService boardService) {
-		this.boardService = boardService;
+	public HotplaceRestController(HotplaceService hotplaceService) {
+		this.hotplaceService = hotplaceService;
 	}
-
+	
 	@GetMapping
 	public ResponseEntity<?> list(PageBean bean) {
-		logger.debug("board..............................list");
-		List<BoardDto> articles = boardService.searchAll(bean);
+		List<HotplaceDto> articles = hotplaceService.searchAll(bean);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("articles", articles);
@@ -54,36 +50,41 @@ public class BoardRestController {
 		} else {
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 		}
+		
 	}
 	
 	@GetMapping("/{articleNo}")
 	public ResponseEntity<?> detail(@PathVariable("articleNo") int articleNo) {
-		logger.debug("board..............................detail : {}", articleNo);
 		
-		BoardDto article = boardService.search(articleNo);
-		boardService.updateHit(articleNo);
+		HotplaceDto article = hotplaceService.search(articleNo);
+		hotplaceService.updateHit(articleNo);
 		
 		if (article == null) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<BoardDto> (article, HttpStatus.OK);
+			return new ResponseEntity<HotplaceDto> (article, HttpStatus.OK);
 		}
 	}
-
 	
 	@PostMapping
-	public ResponseEntity<String> regist(@RequestBody BoardDto article) {
+	public ResponseEntity<String> regist(@RequestBody HotplaceDto article) {
 		logger.debug("board..............................regist : {}", article);
-		boardService.insert(article);
+		hotplaceService.insert(article);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
+	@PutMapping("/like/{articleNo}")
+	public ResponseEntity<String> updateLike(@PathVariable("articleNo") int articleNo) {
+		hotplaceService.updateLike(articleNo);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
 	
 	@PutMapping
-	public ResponseEntity<String> update(@RequestBody BoardDto article) {
+	public ResponseEntity<String> update(@RequestBody HotplaceDto article) {
 		logger.debug("board..............................update : {}", article);
-		boardService.update(article);
+		hotplaceService.update(article);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
@@ -91,9 +92,9 @@ public class BoardRestController {
 	@DeleteMapping
 	public ResponseEntity<String> delete(int articleNo) {
 		logger.debug("board..............................delete : {}", articleNo);
-		boardService.delete(articleNo);
+		hotplaceService.delete(articleNo);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
-	
+
 }

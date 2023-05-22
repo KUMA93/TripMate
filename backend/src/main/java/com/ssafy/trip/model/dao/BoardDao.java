@@ -4,9 +4,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.ssafy.trip.model.dto.BoardDto;
 import com.ssafy.trip.model.dto.PageBean;
 
+@Repository
 public interface BoardDao {
 	void insert(BoardDto boardDto) throws SQLException;
 	void update(BoardDto boardDto) throws SQLException;
@@ -15,5 +18,5 @@ public interface BoardDao {
 	List<BoardDto> searchAll(PageBean bean) throws SQLException;
 	int totalCount(PageBean bean);
 	void updateHit(int articleNo) throws SQLException;
-	
+
 }

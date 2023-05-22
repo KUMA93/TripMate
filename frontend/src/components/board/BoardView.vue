@@ -24,7 +24,7 @@
         <div >
           <button class="btn btn-primary" @click="moveHandler">목록</button>
           <button class="btn btn-primary" @click="updateHandler">수정</button>
-          <button class="btn btn-primary" @click="removeHandler">삭제</button>
+          <button class="btn btn-primary" @click="removeHandler" v-if="userInfo.id == article.userId || userInfo.position == 'admin'">삭제</button>
         </div>
         </td>
       </tr>
@@ -34,6 +34,9 @@
 
 <script>
 import http from '@/api/http'
+import { mapState, mapGetters } from "vuex";
+
+const UserStore = "UserStore";
 
 export default {
   data() {
@@ -47,7 +50,13 @@ export default {
   this.articleNo = this.$route.params.articleNo;
   console.log(this.articleNo)
   this.boardDetail()
-},
+  },
+
+  computed: {
+    ...mapState(UserStore, ["isLogin", "userInfo"]),
+    ...mapGetters(["checkUserInfo"]),
+  },
+
 methods: {
   boardDetail() {
     http.get(`rest/board/${this.articleNo}`)

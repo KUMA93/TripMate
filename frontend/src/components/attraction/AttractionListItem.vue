@@ -1,5 +1,5 @@
 <template>
-  <b-tr>
+  <b-tr @click="moveMap()">
     <b-td><img :src="attraction.first_image" alt="image"></b-td>
     <b-td>{{ attraction.title }}</b-td>
     <b-td>{{ attraction.addr1 }} {{ attraction.addr2 }}</b-td>
@@ -24,10 +24,16 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions(["setAttractionDetail"]),
+    ...mapActions(["setAttractionDetail", "setMapCenter"]),
     selectAttraction() {
       // console.log("selected", this.attraction);
       this.setAttractionDetail(this.attraction);
+    },
+    moveMap() {
+      this.setMapCenter({
+        lat: this.attraction.latitude,
+        lon: this.attraction.longitude
+      });
     }
   },
 };

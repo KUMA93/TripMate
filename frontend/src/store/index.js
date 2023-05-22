@@ -69,7 +69,7 @@ export default new Vuex.Store({
       commit("SET_ATTRACTION_DETAIL", attraction);
     },
 
-    setMapCenter({ commit }, lat, lon) {
+    setMapCenter({ commit }, { lat, lon }) {
       commit("SET_MAP_CENTER", {lat: lat, lon: lon});
     }
     ///////////////////////// Attraction End //////////////////////////////////

@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,19 @@ public class AttractionRestController extends HttpServlet {
 
 	@Autowired
 	private AttractionService service;
+	
+	@RequestMapping(value = "/rest/trip/search/{contentId}", method=RequestMethod.GET)
+	private ResponseEntity<?> search(@PathVariable("contentId") int contentId){
+		logger.debug("trip search........................ contentId : {}", contentId);
+		
+		AttractionInfo attraction = service.getAttraction(contentId);
+		
+		if (attraction == null) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<AttractionInfo>(attraction, HttpStatus.OK);
+		}
+	}
 
 	@RequestMapping(value = "/rest/trip/search", method = RequestMethod.GET)
 	private ResponseEntity<List<AttractionInfo>> returnJson(

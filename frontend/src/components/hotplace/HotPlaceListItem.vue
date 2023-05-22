@@ -15,8 +15,7 @@ export default {
   name: 'HotPlaceListItem',
   components: {},
   data() {
-    return {
-    };
+    return {};
   },
   props: {
     hotplace: Object,

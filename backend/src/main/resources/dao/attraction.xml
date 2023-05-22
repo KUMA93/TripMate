@@ -60,4 +60,10 @@
 		limit 100
 	</select>
 
+	<select id="getAttractionInfo" resultMap="attractionInfoMap" parameterType="int">
+		select *
+		from attraction_info left join attraction_description
+		using (content_id)
+		where content_id = #{content_id}
+	</select>
 </mapper>

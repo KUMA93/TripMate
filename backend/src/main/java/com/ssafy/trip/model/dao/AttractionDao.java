@@ -11,4 +11,6 @@ import com.ssafy.trip.model.dto.AttractionInfo;
 public interface AttractionDao {
 
 	List<AttractionInfo> getAllAttractionInfos(AttractionInfo searchInfo) throws SQLException;
+
+	AttractionInfo getAttractionInfo(int contentId) throws SQLException;
 }

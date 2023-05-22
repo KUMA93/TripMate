@@ -6,4 +6,5 @@ import com.ssafy.trip.model.dto.AttractionInfo;
 
 public interface AttractionService {
 	public List<AttractionInfo> getAllAttractions(AttractionInfo searchInfo);
+	public AttractionInfo getAttraction(int contentId);
 }

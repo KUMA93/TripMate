@@ -30,4 +30,14 @@ public class AttractionServiceImpl implements AttractionService {
 		}
 	}
 
+	@Override
+	public AttractionInfo getAttraction(int contentId) {
+		try {
+			return dao.getAttractionInfo(contentId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new TripException(e.getMessage());
+		}
+	}
+
 }

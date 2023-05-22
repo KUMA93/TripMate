@@ -162,6 +162,16 @@ const routes = [
         path: "list",
         name: "HotPlaceList",
         component: () => import("@/components/hotplace/HotPlaceList")
+      },
+      {
+        path: "view/:articleNo",
+        name: "HotPlaceView",
+        component: () => import("@/components/hotplace/HotPlaceView")
+      },
+      {
+        path: "write",
+        name: "HotPlaceWrite",
+        component: () => import("@/components/hotplace/HotPlaceWrite")
       }
     ]
   },

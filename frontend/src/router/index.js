@@ -128,9 +128,10 @@ const routes = [
     path: "/hotplace",
     name: "AppHotplace",
     component: AppHotplace,
+    redirect: "/hotplace/list",
     children: [
       {
-        path: "/list",
+        path: "list",
         name: "HotPlaceList",
         component: () => import("@/components/hotplace/HotPlaceList")
       }

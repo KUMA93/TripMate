@@ -10,24 +10,33 @@
 		<result column="subject" property="subject"/>
 		<result column="content" property="content"/>
 		<result column="hit" property="hit"/>
-		<result column="like" property="like"/>		
+		<result column="likes" property="likes"/>		
 		<result column="register_time" property="registerTime"/>
 		<result column="content_id" property="contentId"/>		
+	</resultMap>
+	
+	<resultMap type="likeDto" id="likeMap">
+		<id 	column="llist_id" 	property="llistId"/>
+		<result column="id"			property="id"/>
+		<result column="article_no" property="articleNo"/>
 	</resultMap>
 
 	<sql id="orderCon">	
 		<choose>
-			<when test=" key == 'like' ">
-				order by like desc
+			<when test=" key == 'likes' ">
+				order by likes desc
 			</when>
 			<when test=" key == 'registerTime' ">
-				order by register_time
+				order by register_time desc
+			</when>
+			<when test=" key == 'hit' ">
+				order by hit desc
 			</when>
 		</choose>
 	</sql>
 	
 	<insert id="insert" parameterType="hotplaceDto">
-		insert into hotplace (user_id, subject, content, hit, like, register_time, content_id)
+		insert into hotplace (user_id, subject, content, hit, likes, register_time, content_id)
 		values (#{userId}, #{subject}, #{content}, 0, 0, now(), #{contentId})
 	</insert>
 
@@ -38,9 +47,15 @@
 	</select>
 	
 	<select id="search" parameterType="int" resultMap="hotplaceMap">
-		select article_no, user_id, subject, content, hit, like, register_time, content_id 
+		select article_no, user_id, subject, content, hit, likes, register_time, content_id 
 		from hotplace
 		where article_no = #{articleNo}
+	</select>
+	
+	<select id="isLike" parameterType="likeDto" resultType="int">
+		select count(*)
+		from like_list
+		where article_no = #{articleNo} and id = #{id} 
 	</select>
 	
 	<update id="updateHit" parameterType="int">
@@ -49,21 +64,21 @@
 		where article_no = #{articleNo}
 	</update>
 	
-	<update id="updateLike" parameterType="int">
+	<update id="updateLike" parameterType="likeDto">
 		update hotplace
-		set like = like + 1
+		set likes = likes + 1
 		where article_no = #{articleNo}
 	</update>
 	
-	<update id="cancelLike" parameterType="int">
+	<update id="cancelLike" parameterType="likeDto">
 		update hotplace
-		set like = like - 1
+		set likes = likes - 1
 		where article_no = #{articleNo}
 	</update>
 	
 	<update id="update" parameterType="hotplaceDto">
 		update hotplace
-		set subject = #{subject}, content = #{content}
+		set subject = #{subject}, content = #{content}, content_id = #{contentId}
 		where article_no = #{articleNo}
 	</update>
 	

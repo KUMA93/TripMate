@@ -172,6 +172,11 @@ const routes = [
         path: "write",
         name: "HotPlaceWrite",
         component: () => import("@/components/hotplace/HotPlaceWrite")
+      },
+      {
+        path: "modify/:articleNo",
+        name: "HotPlaceModify",
+        component: () => import("@/components/hotplace/HotPlaceModify")
       }
     ]
   },

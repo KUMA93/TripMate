@@ -31,6 +31,7 @@
               <td v-if="this.selectedHotplace">
                 {{ this.selectedHotplace.title }}
               </td>
+              <td v-else>{{ this.attraction.title }}</td>
             </tr>
             <tr>
               <td>제목</td>
@@ -55,8 +56,8 @@
             <tr>
               <td colspan="2">
                 <div class="text-center">
-                  <button class="btn btn-primary" @click="createHandler">
-                    게시글 등록
+                  <button class="btn btn-primary" @click="updateHandler">
+                    수정
                   </button>
                   <button class="btn btn-primary" @click="moveHandler">
                     목록
@@ -81,7 +82,7 @@ import { mapActions, mapState, mapGetters } from "vuex";
 const UserStore = "UserStore";
 
 export default {
-  name: "HotPlaceWrite",
+  name: "HotPlaceModify",
   components: {
     HotPlaceSearchList,
     TripMap,
@@ -96,6 +97,7 @@ export default {
 
   data() {
     return {
+      articleNo: "",
       article: {
         articleNo: "",
         userId: "",
@@ -105,10 +107,13 @@ export default {
         registerTime: "",
         contentId: "",
       },
+      attraction: {},
     };
   },
   created() {
     this.setHotPlaceOri();
+    this.articleNo = this.$route.params.articleNo;
+    this.getArticleInfo();
   },
   methods: {
     ...mapActions(["setMapCenter", "setHotplaceNull"]),
@@ -121,12 +126,33 @@ export default {
       this.setHotplaceNull();
     },
 
-    createHandler() {
+    getArticleInfo() {
+      http
+        .get(`rest/hotplace/${this.articleNo}`)
+        .then(({ data }) => {
+          this.article = data;
+          this.getAttractionInfo();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getAttractionInfo() {
+      http
+        .get(`rest/trip/search/${this.article.contentId}`)
+        .then(({ data }) => {
+          this.attraction = data;
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    updateHandler() {
       let err = false;
       let msg = "";
-      let selectedHotplace = this.selectedHotplace;
-      console.log(selectedHotplace);
-
+      console.log(this.selectedHotplace.contentId);
       !this.article.subject &&
         ((msg = "글 제목을 입력해주세요"),
         (err = true),
@@ -135,21 +161,20 @@ export default {
         ((msg = "글 내용을 입력해주세요"),
         (err = true),
         this.$refs.content.focus());
-      !err & (this.selectedHotplace == null) &&
-        ((msg = "장소를 선택해주세요"), (err = true));
       if (err) {
         alert(msg);
       } else {
         this.article.userId = this.userInfo.id;
-        this.article.contentId = selectedHotplace.contentId;
+        if (this.selectedHotplace) {
+          this.article.contentId = this.selectedHotplace.contentId;
+        }
 
-        console.log(this.article);
         http
-          .post("rest/hotplace", this.article)
+          .put("rest/hotplace", this.article)
           .then(({ data }) => {
             if (data == "success") {
               this.setHotplaceNull();
-              alert("등록 완료");
+              alert("수정 완료");
               this.moveHandler();
             }
           })

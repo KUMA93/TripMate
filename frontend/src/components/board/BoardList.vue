@@ -24,7 +24,7 @@
         <b-pagination       pills  align='center'
                             v-model="pageNo"  
                             :total-rows="total"
-                            :per-page="5"
+                            :per-page="10"
                             aria-controls="BoardList"
     ></b-pagination>
 

@@ -6,7 +6,7 @@
   </tr>
   <tr>
     <td>작성자</td>
-    <td><input type="text" id="userId" ref="userId" v-text="article.userId" readonly /></td>
+    <td>{{ userInfo.id }}</td>
   </tr>
   <tr>
       <td colspan="2">내용</td>
@@ -29,6 +29,9 @@
 
 <script>
 import http from "@/api/http";
+import { mapState, mapGetters } from "vuex";
+
+const UserStore = "UserStore";
 
 export default {
   data() {
@@ -45,7 +48,10 @@ export default {
     };
   },
 
-
+  computed: {
+    ...mapState(UserStore, ["isLogin", "userInfo"]),
+    ...mapGetters(["checkUserInfo"]),
+  },
   methods: {
     moveHandler() {
     this.$router.push({name:"BoardList"})

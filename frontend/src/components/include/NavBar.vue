@@ -4,7 +4,7 @@
     <b-navbar-brand href="/">
       <router-link :to="{ name: 'main' }">
           <b-img
-            :src="require('@/assets/img/logos/ssafy-text-logo.png')"
+            :src="require('@/assets/img/logos/logo_long.png')"
             id="logo"
             class="d-inline-block align-top"
             alt="logo"

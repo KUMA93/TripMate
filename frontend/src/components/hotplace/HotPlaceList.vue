@@ -6,11 +6,13 @@
             <div class="col-2">
                 <b-form-select  v-model="key"   :options="keys"></b-form-select>
             </div>
-            <div class="col-4">
-                <b-form-input   v-model="word" @keyup.enter="searchArticle" />
-            </div>
+            <b-pagination       pills  align='center'
+                            v-model="pageNo"  
+                            :total-rows="total"
+                            :per-page="10"
+                            aria-controls="HotPlaceList"
+    ></b-pagination>
             <div class="col-2">
-                <b-button variant="primary"  @click="searchArticle">검색</b-button>
                 <b-button variant="primary"  @click="goWrite">핫플 등록</b-button>
             </div>
             <div class="col-2"></div>
@@ -18,7 +20,7 @@
       <div v-if="hotplaces.length > 0">
         <b-card-group columns>
           <hot-place-list-item v-for="hotplace in hotplaces" :key="hotplace.contentId"
-            :hotplace="hotplace"></hot-place-list-item>
+            :hotplace="hotplace" id="HotPlaceList"></hot-place-list-item>
         </b-card-group>
       </div>
       <div v-else>
@@ -41,24 +43,41 @@ export default {
   data() {
     return {
       hotplaces: [],
-      word: '',
-    key: 'all',
-    keys: [
-      { value: 'all', text: '----선택하세요----' },
-      { value: 'title', text: '핫플이름' },
-      { value: 'userId', text: '작성자' },
-    ],
+      key: 'likes',
+      keys: [
+        { value: 'likes', text: '----정렬 기준----' },
+        { value: 'likes', text: '좋아요순' },
+        { value: 'registerTime', text: '최신순' },
+        { value: 'hit', text: '조회순' },
+        ],
+      pageNo: '1',
+      total: 0
     };
   },
+
+  watch: {
+    pageNo: function () {
+      this.getHotPlaceList();
+    },
+
+    key: function() {
+      this.getHotPlaceList();  
+    }
+    
+  },
+
   created() {
     this.getHotPlaceList();
-    console.log("hotplaces", this.hotplaces);
   },
   methods: {
     getHotPlaceList() {
-      http.get(`rest/hotplace`)
+      http.get(`rest/hotplace?pageNo=${ this.pageNo }&key=${ this.key }`)
         .then(({ data }) => {
-          console.log("data", data);
+          this.hotplaces = data.hotplaces
+          let page = data.page
+          this.pageNo = page.pageNo
+          this.key = page.key
+          this.total = page.total
         })
         .catch(err => {
           console.log(err);

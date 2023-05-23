@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.trip.model.dao.HotplaceDao;
 import com.ssafy.trip.model.dto.HotplaceDto;
+import com.ssafy.trip.model.dto.LikeDto;
 import com.ssafy.trip.model.dto.PageBean;
 import com.ssafy.trip.model.dto.TripException;
 import com.ssafy.trip.util.PageUtility;
@@ -25,6 +26,7 @@ public class HotplaceServiceImpl implements HotplaceService{
 		try {	
 			dao.insert(hotplaceDto);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new TripException("게시글 등록 중 오류 발생");
 		}
 	}
@@ -49,11 +51,45 @@ public class HotplaceServiceImpl implements HotplaceService{
 	}
 	
 	@Override
-	public void updateLike(int articleNo) {
+	public int isLike(LikeDto likeDto) {
+		
+		return dao.isLike(likeDto);
+	}
+	
+	@Override
+	public void updateLike(LikeDto likeDto) {
 		try {
-			dao.updateLike(articleNo);
+			dao.updateLike(likeDto);
 		} catch (Exception e) {
 			throw new TripException("게시글 좋아요 증가 중 오류 발생");
+		}
+	}
+
+	@Override
+	public void insertLike(LikeDto likeDto) {
+		try {
+			dao.insertLike(likeDto);
+		} catch (Exception e) {
+			throw new TripException("게시글 좋아요 목록 삽입 중 오류 발생");
+		}
+	}
+
+	@Override
+	public void cancelLike(LikeDto likeDto) {
+		try {
+			dao.cancelLike(likeDto);
+		} catch (Exception e) {
+			throw new TripException("게시글 좋아요 취소 중 오류 발생");
+		}
+		
+	}
+	
+	@Override
+	public void deleteLike(LikeDto likeDto) {
+		try {
+			dao.deleteLike(likeDto);
+		} catch (Exception e) {
+			throw new TripException("게시글 좋아요 목록 삽입 중 오류 발생");
 		}
 	}
 	
@@ -98,4 +134,8 @@ public class HotplaceServiceImpl implements HotplaceService{
 			throw new TripException("게시글 목록 정보를 조회 하는 중 오류 발생!!!");
 		}
 	}
+
+
+
+	
 }

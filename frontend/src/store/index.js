@@ -11,11 +11,16 @@ export default new Vuex.Store({
   state: {
     attractions: [],
     attraction: null,
-    mapCenter: { lat: 37.500613, lon: 127.036431 }
+    mapCenter: { lat: 37.500613, lon: 127.036431 },
+    ////////////// Hotplace //////////////
+    selectedHotplace: null,
   },
   getters: {
     allAttractions(state) {
       return state.attractions;
+    },
+    getHotplace(state) {
+      return state.hotplace;
     },
   },
   mutations: {
@@ -28,8 +33,14 @@ export default new Vuex.Store({
     },
     SET_MAP_CENTER(state, mapCenter) {
       state.mapCenter = mapCenter;
-    }
+    },
     ///////////////////////// Attraction End ////////////////////////////////
+    SET_HOTPLACE_ITEM(state, attraction) {
+      state.selectedHotplace = attraction;
+    },
+    SET_HOTPLACE_NULL(state) {
+      state.selectedHotplace = null
+    }
   },
   actions: {
     ///////////////////////// Attraction Start ////////////////////////////////
@@ -71,8 +82,18 @@ export default new Vuex.Store({
 
     setMapCenter({ commit }, { lat, lon }) {
       commit("SET_MAP_CENTER", {lat: lat, lon: lon});
-    }
+    },
     ///////////////////////// Attraction End //////////////////////////////////
+    ///////////////////////// Hotplace Strat //////////////////////////////////
+
+    setHotplaceItem({ commit }, attraction) {
+      commit("SET_HOTPLACE_ITEM", attraction);
+    },
+
+    setHotplaceNull({ commit }) {
+      commit("SET_HOTPLACE_NULL");
+    }
+    ///////////////////////// Hotplace End //////////////////////////////////
   },
   ///////////////////////// JWT 활용을 위한 모듈 ///////////////////////////////
   modules: {

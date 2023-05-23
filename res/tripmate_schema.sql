@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`hotplace` (
   `subject` VARCHAR(200) NOT NULL,
   `content` VARCHAR(2000) NULL DEFAULT NULL,
   `hit` INT UNSIGNED NOT NULL DEFAULT '0',
-  `like` INT UNSIGNED NOT NULL DEFAULT '0',
+  `likes` INT UNSIGNED NOT NULL DEFAULT '0',
   `register_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `content_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`article_no`),
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`tripplan` (
   `subject` VARCHAR(200) NOT NULL,
   `content` VARCHAR(2000) NULL DEFAULT NULL,
   `hit` INT UNSIGNED NOT NULL DEFAULT '0',
-  `like` INT UNSIGNED NOT NULL DEFAULT '0',
+  `likes` INT UNSIGNED NOT NULL DEFAULT '0',
   `register_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`article_no`))
 ENGINE = InnoDB
@@ -160,8 +160,8 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `enjoytrip`.`like_list`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`like_list` (
-  `id` VARCHAR(20) NOT NULL,
   `llist_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` VARCHAR(20) NOT NULL,
   `article_no` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`llist_id`),
   INDEX `like_list_to_hotplace_article_no_idx` (`article_no` ASC) VISIBLE,

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.trip.model.dto.HotplaceDto;
+import com.ssafy.trip.model.dto.LikeDto;
 import com.ssafy.trip.model.dto.PageBean;
 import com.ssafy.trip.model.service.HotplaceService;
 
@@ -43,7 +44,7 @@ public class HotplaceRestController {
 		List<HotplaceDto> articles = hotplaceService.searchAll(bean);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("articles", articles);
+		result.put("hotplaces", articles);
 		result.put("page", bean);
 		if (articles.isEmpty() || articles == null) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -73,13 +74,42 @@ public class HotplaceRestController {
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
-
-	@PutMapping("/like/{articleNo}")
-	public ResponseEntity<String> updateLike(@PathVariable("articleNo") int articleNo) {
-		hotplaceService.updateLike(articleNo);
+	
+	@PostMapping("/isLike")
+	public ResponseEntity<Integer> isLike(@RequestBody LikeDto likeDto) {
+		int res = hotplaceService.isLike(likeDto);
+		
+		return new ResponseEntity<Integer>(res, HttpStatus.OK);
+	}
+	
+	@PutMapping("/like")
+	public ResponseEntity<String> updateLike(@RequestBody LikeDto likeDto) {
+		hotplaceService.updateLike(likeDto);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+	
+	@PostMapping("/insertLike")
+	public ResponseEntity<String> insertLike(@RequestBody LikeDto likeDto) {
+		hotplaceService.insertLike(likeDto);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@PutMapping("/unLike")
+	public ResponseEntity<String> cancelLike(@RequestBody LikeDto likeDto) {
+		hotplaceService.cancelLike(likeDto);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/deleteLike")
+	public ResponseEntity<String> deleteLike(@RequestBody LikeDto likeDto) {
+		hotplaceService.deleteLike(likeDto);
+		
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	} 
+	
 	
 	@PutMapping
 	public ResponseEntity<String> update(@RequestBody HotplaceDto article) {

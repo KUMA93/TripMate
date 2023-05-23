@@ -7,9 +7,10 @@ public class HotplaceDto {
 	private String subject;
 	private String content;
 	private int hit;
-	private int like;
+	private int likes;
 	private String registerTime;
 	private int contentId;
+	
 	public int getArticleNo() {
 		return articleNo;
 	}
@@ -41,10 +42,10 @@ public class HotplaceDto {
 		this.hit = hit;
 	}
 	public int getLike() {
-		return like;
+		return likes;
 	}
-	public void setLike(int like) {
-		this.like = like;
+	public void setLike(int likes) {
+		this.likes = likes;
 	}
 	public String getRegisterTime() {
 		return registerTime;
@@ -61,7 +62,7 @@ public class HotplaceDto {
 	@Override
 	public String toString() {
 		return "HotplaceDto [articleNo=" + articleNo + ", userId=" + userId + ", subject=" + subject + ", content="
-				+ content + ", hit=" + hit + ", like=" + like + ", registerTime=" + registerTime + ", contentId="
+				+ content + ", hit=" + hit + ", likes=" + likes + ", registerTime=" + registerTime + ", contentId="
 				+ contentId + "]";
 	}
 	

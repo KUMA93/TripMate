@@ -1,5 +1,8 @@
 package com.ssafy.trip.controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.trip.model.dto.BoardDto;
@@ -45,6 +45,17 @@ public class BoardRestController {
 	public ResponseEntity<?> list(PageBean bean) {
 		logger.debug("board..............................list");
 		List<BoardDto> articles = boardService.searchAll(bean);
+		
+		LocalDateTime now = LocalDateTime.now();
+		for(BoardDto article : articles) {
+			LocalDateTime d = LocalDateTime.parse(article.getRegisterTime(), 
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));	
+			if (d.getYear()==now.getYear() && d.getMonth()==now.getMonth() && d.getDayOfMonth()==now.getDayOfMonth()) {
+				article.setRegisterTime(d.format(DateTimeFormatter.ofPattern("HH:MM")));
+			}else {
+				article.setRegisterTime(d.format(DateTimeFormatter.ofPattern("YY.MM.dd")));
+			}
+		}
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("articles", articles);

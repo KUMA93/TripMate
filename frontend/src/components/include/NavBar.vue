@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
-  <b-navbar toggleable="lg" type="light" variant="faded">
-    <b-navbar-brand href="/">
-      <router-link :to="{ name: 'main' }">
+    <b-navbar toggleable="lg">
+      <b-navbar-brand href="/">
+        <router-link :to="{ name: 'main' }">
           <b-img
             :src="require('@/assets/img/logos/logo_long.png')"
             id="logo"
@@ -10,58 +10,97 @@
             alt="logo"
           ></b-img>
         </router-link>
-    </b-navbar-brand>
+      </b-navbar-brand>
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item
+            ><router-link class="nav-link" to="/attraction"
+              ><span class="nav-menu"
+                ><b-icon icon="pin-map-fill"></b-icon> 지역별여행지</span
+              ></router-link
+            ></b-nav-item
+          >
+          <b-nav-item
+            ><router-link class="nav-link" to="/tripplan"
+              ><span class="nav-menu"
+                ><b-icon icon="cloud-sun-fill"></b-icon> 지역별날씨정보</span
+              ></router-link
+            ></b-nav-item
+          >
+          <b-nav-item
+            ><router-link class="nav-link" to="/hotplace"
+              ><span class="nav-menu"
+                ><b-icon icon="bookmark-heart-fill"></b-icon> 핫플자랑하기</span
+              ></router-link
+            ></b-nav-item
+          >
+          <b-nav-item
+            ><router-link class="nav-link" to="/board"
+              ><span class="nav-menu"
+                ><b-icon icon="chat-quote-fill"></b-icon> 여행정보공유</span
+              ></router-link
+            ></b-nav-item
+          >
+          <b-nav-item
+            ><router-link class="nav-link" to="/notice"
+              ><span class="nav-menu"
+                ><b-icon icon="megaphone-fill"></b-icon> 공지사항</span
+              ></router-link
+            ></b-nav-item
+          >
+        </b-navbar-nav>
 
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item><router-link class="nav-link" to="/attraction">지역별여행지</router-link></b-nav-item>
-        <b-nav-item><router-link class="nav-link" to="/hotplace">핫플자랑하기</router-link></b-nav-item>
-        <b-nav-item><router-link class="nav-link" to="/weather">지역별 날씨정보</router-link></b-nav-item>
-        <b-nav-item><router-link class="nav-link" to="/board">여행정보공유</router-link></b-nav-item>
-        <b-nav-item><router-link class="nav-link" to="/notice">공지사항</router-link></b-nav-item>
-      </b-navbar-nav>
-
-      <!-- after login -->
-      <b-navbar-nav class="ml-auto" v-if="userInfo">
-        <b-nav-item class="align-self-center">
-          <b-avatar variant="primary"></b-avatar>
-          {{ userInfo.name }}({{ userInfo.id }})님 환영합니다.
-        </b-nav-item>
-        <b-nav-item class="align-self-center">
-          <router-link :to="{ name: 'mypage' }" class="link align-self-center">내정보보기</router-link>
-        </b-nav-item>
-        <b-nav-item class="align-self-center link" @click.prevent="onClickLogout">로그아웃</b-nav-item>
-      </b-navbar-nav>
-      <!-- before login -->
-      <b-navbar-nav class="ml-auto" v-else>
-        <b-nav-item-dropdown right>
-          <template #button-content>
-            <b-icon icon="people" font-scale="2"></b-icon>
-          </template>
-          <b-dropdown-item href="#">
-            <router-link :to="{ name: 'join' }" class="link">
-              <b-icon icon="person-circle"></b-icon> 회원가입
-            </router-link>
-          </b-dropdown-item>
-          <b-dropdown-item href="#">
-            <router-link :to="{ name: 'login' }" class="link"> <b-icon icon="key"></b-icon> 로그인 </router-link>
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+        <!-- after login -->
+        <b-navbar-nav class="ml-auto" v-if="userInfo">
+          <b-nav-item class="align-self-center">
+            <b-avatar variant="info" size="2rem"></b-avatar>
+            <span class="nav-menu"> {{ userInfo.name }}님 환영합니다. </span>
+          </b-nav-item>
+          <b-nav-item class="align-self-center" @click="onClickMypage">
+            <span class="nav-menu"> 내정보보기 </span>
+          </b-nav-item>
+          <b-nav-item
+            class="align-self-center link"
+            @click.prevent="onClickLogout"
+            ><span class="nav-menu">로그아웃</span></b-nav-item
+          >
+        </b-navbar-nav>
+        <!-- before login -->
+        <b-navbar-nav class="ml-auto nav-menu" v-else>
+          <b-nav-item-dropdown right>
+            <template #button-content>
+              <b-icon icon="people" font-scale="2" class="nav-menu"></b-icon>
+            </template>
+            <b-dropdown-item href="#">
+              <router-link :to="{ name: 'join' }" class="link">
+                <span class="nav-menu"
+                  ><b-icon icon="person-circle"></b-icon> 회원가입</span
+                >
+              </router-link>
+            </b-dropdown-item>
+            <b-dropdown-item href="#" class="nav-menu">
+              <router-link :to="{ name: 'login' }" class="link">
+                <span class="nav-menu"
+                  ><b-icon icon="key"></b-icon> 로그인</span
+                >
+              </router-link>
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 
-const UserStore = "UserStore"
+const UserStore = "UserStore";
 
 export default {
-  name: 'NavBar',
+  name: "NavBar",
   components: {},
   data() {
     return {};
@@ -72,17 +111,21 @@ export default {
   },
 
   created() {
-
-    console.log(this.userInfo)
+    console.log(this.userInfo);
   },
+
   methods: {
-      ...mapActions(UserStore, ["userLogout"]),
-      onClickLogout() {
+    ...mapActions(UserStore, ["userLogout"]),
+    onClickLogout() {
       console.log(this.userInfo.id);
       this.userLogout(this.userInfo.id);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
       if (this.$route.path != "/") this.$router.push({ name: "main" });
+    },
+
+    onClickMypage() {
+      this.$router.push({ name: "mypage" });
     },
   },
 };
@@ -94,21 +137,22 @@ img {
 }
 
 #nav {
-  font-weight: light;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
 
 .header {
   padding: 30px;
   text-align: center;
-  box-shadow: 0px 1px 10px rgba(159, 157, 157, 0.3);
+  box-shadow: 20px 40px 90px rgba(159, 157, 157, 0.3);
 }
 
-a {
+.nav-menu {
   font-weight: bold;
-  color: #2c3e50;
+  color: #252525;
+  /* opacity: 0.85; */
 }
 
-a:hover {
-  color: #42b983;
+.nav-menu:hover {
+  color: #58b7dc;
 }
 </style>

@@ -52,8 +52,6 @@ export default {
   created() {
     this.getAttractionInfo();
 
-    console.log("첫 hotplace 정보", this.hotplace);
-
     if (this.userInfo) {
       this.likeItem.articleNo = this.hotplace.articleNo;
       this.likeItem.id = this.userInfo.id;

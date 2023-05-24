@@ -23,7 +23,7 @@
             ></b-nav-item
           >
           <b-nav-item
-            ><router-link class="nav-link" to="/tripplan"
+            ><router-link class="nav-link" to="/weather"
               ><span class="nav-menu"
                 ><b-icon icon="cloud-sun-fill"></b-icon> 지역별날씨정보</span
               ></router-link

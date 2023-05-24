@@ -103,13 +103,23 @@ public class HotplaceRestController {
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteLike")
-	public ResponseEntity<String> deleteLike(@RequestBody LikeDto likeDto) {
+	@DeleteMapping("/deleteLike/{id}/{articleNo}")
+	public ResponseEntity<String> deleteLike(@PathVariable("id") String id, @PathVariable("articleNo") int articleNo) {
+		LikeDto likeDto = new LikeDto();
+		likeDto.setId(id);
+		likeDto.setArticleNo(articleNo);
 		hotplaceService.deleteLike(likeDto);
 		
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	} 
 	
+	@GetMapping("/getLike/{articleNo}")
+	public ResponseEntity<Integer> getLike(@PathVariable("articleNo") int articleNo) {
+		logger.debug("좋아요 개수 리턴............................글 번호:{}", articleNo);
+		int cnt = hotplaceService.getLike(articleNo);
+		logger.debug("좋아요 개수 리턴............................개  수:{}", cnt);
+		return new ResponseEntity<Integer>(cnt, HttpStatus.OK);
+	}
 	
 	@PutMapping
 	public ResponseEntity<String> update(@RequestBody HotplaceDto article) {

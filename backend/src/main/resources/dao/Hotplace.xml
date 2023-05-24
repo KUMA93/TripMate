@@ -64,17 +64,33 @@
 		where article_no = #{articleNo}
 	</update>
 	
+	<insert id="insertLike" parameterType="likeDto">
+		insert into like_list(id, article_no)
+		values(#{id}, #{articleNo})
+	</insert>
+	
 	<update id="updateLike" parameterType="likeDto">
 		update hotplace
 		set likes = likes + 1
 		where article_no = #{articleNo}
 	</update>
 	
+	<delete id="deleteLike" parameterType="likeDto">
+		delete from like_list
+		where id=#{id} and article_no=#{articleNo}
+	</delete>
+	
 	<update id="cancelLike" parameterType="likeDto">
 		update hotplace
 		set likes = likes - 1
 		where article_no = #{articleNo}
 	</update>
+	
+	<select id="getLike" parameterType="int" resultType="int">
+		select likes
+		from hotplace
+		where article_no = #{articleNo}
+	</select>
 	
 	<update id="update" parameterType="hotplaceDto">
 		update hotplace

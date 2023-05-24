@@ -7,16 +7,20 @@
     text-variant="card-title"
   >
     <b-card-title class="align-bottom">{{ hotplaceItem.title }}</b-card-title>
-    <b-card-text v-if="userInfo && isLike" @click="unLike">
-      💗{{ hotplace.likes }}
+    <b-card-text class="like-view" v-if="userInfo && isLike" @click="unLike">
+      💗{{ likes }}
     </b-card-text>
-    <b-card-text v-else-if="userInfo && !isLike" @click="doLike">
-      🤍{{ hotplace.likes }}
+    <b-card-text
+      class="like-view"
+      v-else-if="userInfo && !isLike"
+      @click="doLike"
+    >
+      🤍{{ likes }}
     </b-card-text>
-    <b-card-text v-else> 
-      🤍{{ hotplace.likes }} 
+    <b-card-text class="like-view" v-else @click="goLogin"
+      >🤍{{ likes }}
     </b-card-text>
-    <b-card-text> 👁‍🗨{{ hotplace.hit }} </b-card-text>
+    <b-card-text class="like-view"> 👁‍🗨{{ hotplace.hit }} </b-card-text>
     <b-button @click="moveHandler" class="card-button">자세히 보기</b-button>
   </b-card>
 </template>
@@ -41,6 +45,7 @@ export default {
         articleNo: "",
       },
       isLike: false,
+      likes: "",
     };
   },
   props: {
@@ -48,11 +53,48 @@ export default {
   },
   created() {
     this.getAttractionInfo();
+
+    console.log("첫 hotplace 정보", this.hotplace);
+
+    if (this.userInfo) {
+      this.likeItem.articleNo = this.hotplace.articleNo;
+      this.likeItem.id = this.userInfo.id;
+      http
+        .post(`/rest/hotplace/isLike`, this.likeItem)
+        .then(({ data }) => {
+          if (data == 1) {
+            this.isLike = true;
+          } else {
+            this.isLike = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    http
+      .get(`/rest/hotplace/getLike/${this.hotplace.articleNo}`)
+      .then(({ data }) => {
+        this.likes = data;
+        console.log(this.likes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 
   watch: {
     isLike: function () {
-      this.getAttractionInfo();
+      http
+        .get(`/rest/hotplace/getLike/${this.hotplace.articleNo}`)
+        .then(({ data }) => {
+          this.likes = data;
+          console.log(this.likes);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 
@@ -61,6 +103,13 @@ export default {
       this.$router.push({
         name: "HotPlaceView",
         params: { articleNo: this.hotplace.articleNo },
+      });
+    },
+
+    goLogin() {
+      alert("로그인이 필요한 페이지입니다.");
+      this.$router.push({
+        name: "login",
       });
     },
 
@@ -73,18 +122,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      http
-        .get(`/rest/hotplace/isLike`)
-        .then(({ data }) => {
-          if (data == 1) {
-            this.isLike = true;
-          } else {
-            this.isLike = false;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
 
     doLike() {
@@ -93,12 +130,21 @@ export default {
       http
         .put(`/rest/hotplace/like`, this.likeItem)
         .then(({ data }) => {
-          console.log(data);
+          console.log("좋아요 개수 증가", data);
         })
         .catch((err) => {
           console.log(err);
         });
-      this.isLike = true;
+
+      http
+        .post(`/rest/hotplace/insertLike`, this.likeItem)
+        .then(({ data }) => {
+          console.log("좋아요 리스트에 추가", data);
+          this.isLike = true;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     unLike() {
@@ -107,7 +153,18 @@ export default {
       http
         .put(`/rest/hotplace/unLike`, this.likeItem)
         .then(({ data }) => {
-          console.log(data);
+          console.log("좋아요 개수 감소", data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      http
+        .delete(
+          `/rest/hotplace/deleteLike/${this.likeItem.id}/${this.likeItem.articleNo}`
+        )
+        .then(({ data }) => {
+          console.log("좋아요 리스트에서 제거", data);
+          this.isLike = false;
         })
         .catch((err) => {
           console.log(err);
@@ -120,6 +177,11 @@ export default {
 <style scoped>
 .card-title {
   font-size: 1.2em;
+  color: #ffffff;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.like-view {
   color: #ffffff;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
 }

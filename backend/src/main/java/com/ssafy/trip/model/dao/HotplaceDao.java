@@ -19,6 +19,7 @@ public interface HotplaceDao {
 	void insertLike(LikeDto likeDto);
 	void cancelLike(LikeDto likeDto);
 	void deleteLike(LikeDto likeDto);
+	int getLike(int articleNo);
 	void insert(HotplaceDto hotplaceDto);
 	void update(HotplaceDto hotplaceDto);
 	void delete(int articleNo);

@@ -15,6 +15,7 @@ public interface HotplaceService {
 	public void insertLike(LikeDto likeDto);
 	public void cancelLike(LikeDto likeDto);
 	public void deleteLike(LikeDto likeDto);
+	public int getLike(int articleNo);
 	public void insert(HotplaceDto hotplaceDto);
 	public void update(HotplaceDto hotplaceDto);
 	public void delete(int articleNo);

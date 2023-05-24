@@ -89,8 +89,20 @@ public class HotplaceServiceImpl implements HotplaceService{
 		try {
 			dao.deleteLike(likeDto);
 		} catch (Exception e) {
-			throw new TripException("게시글 좋아요 목록 삽입 중 오류 발생");
+			e.printStackTrace();
+			throw new TripException("게시글 좋아요 목록 삭제 중 오류 발생");
 		}
+	}
+	
+	@Override
+	public int getLike(int articleNo) {
+		try {
+			return dao.getLike(articleNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new TripException("좋아요 개수 리턴 중 오류 발생");
+		}
+		
 	}
 	
 	@Transactional
@@ -134,8 +146,5 @@ public class HotplaceServiceImpl implements HotplaceService{
 			throw new TripException("게시글 목록 정보를 조회 하는 중 오류 발생!!!");
 		}
 	}
-
-
-
 	
 }

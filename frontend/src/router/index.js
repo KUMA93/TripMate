@@ -171,6 +171,7 @@ const routes = [
       {
         path: "write",
         name: "HotPlaceWrite",
+        beforeEnter: onlyAuthUser,
         component: () => import("@/components/hotplace/HotPlaceWrite")
       },
       {

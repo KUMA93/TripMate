@@ -194,7 +194,15 @@ export default {
 
 .card {
   position: relative;
+  overflow: hidden;
 }
+.card img {
+  transition: all 0.2s linear;
+}
+.card:hover img {
+  transform: scale(1.2);
+}
+
 .detail {
   position: absolute;
   left: 40%;

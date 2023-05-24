@@ -1,8 +1,6 @@
 <template>
   <div>
     <div id="map"></div>
-    <div class="button-group">
-    </div>
   </div>
 </template>
 

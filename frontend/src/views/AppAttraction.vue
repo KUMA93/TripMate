@@ -1,12 +1,10 @@
 <template>
   <div>
     <the-header title="지역별 여행지"></the-header>
-    <b-container class="bv-example-row mt-3 text-center">
+    <b-container class="bv-example-row mt-2 text-center">
       <b-row>
-        <b-col>
           <!-- 검색 폼 -->
           <trip-search-form></trip-search-form>
-        </b-col>
       </b-row>
       <b-row class="mt-3"></b-row>
       <b-row>

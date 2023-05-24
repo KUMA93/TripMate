@@ -1,13 +1,11 @@
 <template>
   <div>
-    <b-container fluid class="bv-example-row mt-3 text-center">
+    <b-container class="bv-example-row mt-3 text-center">
       <b-row>
         <b-col>
           <b-row>
-            <b-col>
               <!-- 검색 폼 -->
               <trip-search-form></trip-search-form>
-            </b-col>
           </b-row>
           <b-row class="mt-3"></b-row>
           <b-row>

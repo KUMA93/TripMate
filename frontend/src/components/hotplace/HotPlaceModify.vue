@@ -187,4 +187,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#trip-list {
+  height: 40vh;
+  overflow-y: scroll;
+}
+</style>

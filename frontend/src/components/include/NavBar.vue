@@ -1,5 +1,5 @@
 <template>
-  <div id="nav" shadow>
+  <div id="nav">
     <b-navbar toggleable="lg">
       <b-navbar-brand href="/">
         <router-link :to="{ name: 'main' }">
@@ -137,13 +137,14 @@ img {
   width: 150px;
 }
 
-.nav {
+#nav {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
 
 .header {
   padding: 30px;
   text-align: center;
-  box-shadow: 0px 1px 10px rgba(159, 157, 157, 0.3);
+  box-shadow: 20px 40px 90px rgba(159, 157, 157, 0.3);
 }
 
 .nav-menu {

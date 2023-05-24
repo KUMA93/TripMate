@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.trip.model.dao.TripPlanDao">
+	
+	<resultMap type="TripPlanDto" id="TripPlanMap">
+		<id 	column="article_no" property="articleNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+	
+	<resultMap type="likeDto" id="likeMap">
+		<id 	column="llist_id" 	property="llistId"/>
+		<result column="id"			property="id"/>
+		<result column="article_no" property="articleNo"/>
+	</resultMap>
+
+	<sql id="orderCon">	
+		<choose>
+			<when test=" key == 'likes' ">
+				order by likes desc
+			</when>
+			<when test=" key == 'registerTime' ">
+				order by register_time desc
+			</when>
+			<when test=" key == 'hit' ">
+				order by hit desc
+			</when>
+		</choose>
+	</sql>
+	
+	<insert id="insert" parameterType="hotplaceDto">
+		insert into hotplace (user_id, subject, content, hit, likes, register_time, content_id)
+		values (#{userId}, #{subject}, #{content}, 0, 0, now(), #{contentId})
+	</insert>
+
+	<select id="searchAll" parameterType="PageBean" resultMap="hotplaceMap">
+		select * from hotplace
+		<include refid="orderCon"/>
+		limit #{start}, #{interval}
+	</select>
+	
+	<select id="search" parameterType="int" resultMap="hotplaceMap">
+		select article_no, user_id, subject, content, hit, likes, register_time, content_id 
+		from hotplace
+		where article_no = #{articleNo}
+	</select>
+	
+	<select id="isLike" parameterType="likeDto" resultType="int">
+		select count(*)
+		from like_list
+		where article_no = #{articleNo} and id = #{id} 
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update hotplace
+		set hit = hit + 1
+		where article_no = #{articleNo}
+	</update>
+	
+	<update id="updateLike" parameterType="likeDto">
+		update hotplace
+		set likes = likes + 1
+		where article_no = #{articleNo}
+	</update>
+	
+	<update id="cancelLike" parameterType="likeDto">
+		update hotplace
+		set likes = likes - 1
+		where article_no = #{articleNo}
+	</update>
+	
+	<update id="update" parameterType="hotplaceDto">
+		update hotplace
+		set subject = #{subject}, content = #{content}, content_id = #{contentId}
+		where article_no = #{articleNo}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from hotplace
+		where article_no = #{articleNo}
+	</delete>
+	
+	<select id="totalCount" parameterType="PageBean" resultType="int">
+		select count(*) from hotplace
+	</select>
+</mapper>

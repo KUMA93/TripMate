@@ -8,6 +8,15 @@
 
 <script>
 import { mapState } from "vuex";
+import pin_attraction from "@/assets/img/map/pin_attraction.png";
+import pin_restaurant from "@/assets/img/map/pin_restaurant.png";
+import pin_shopping from "@/assets/img/map/pin_shopping.png"
+import pin_festival from "@/assets/img/map/pin_festival.png";
+import pin_trip from "@/assets/img/map/pin_trip.png";
+import pin_accommodation from "@/assets/img/map/pin_accommodation.png";
+import pin_leports from "@/assets/img/map/pin_leports.png";
+import pin_culture from "@/assets/img/map/pin_culture.png";
+
 
 export default {
   name: 'TripMap',
@@ -18,6 +27,17 @@ export default {
       positions: [],
       markers: [],
       infowindow: null,
+      imgSrc: {
+        12: pin_attraction, // 관광지
+        14: pin_culture, // 문화시설
+        15: pin_festival, // 축제/공연/행사
+        25: pin_trip, // 여행코스
+        28: pin_leports, // 레포츠
+        32: pin_accommodation, // 숙박
+        38: pin_shopping, // 쇼핑
+        39: pin_restaurant,
+
+      }
     };
   },
   props: {
@@ -28,7 +48,7 @@ export default {
   },
   watch: {
     attractions() {
-      // console.log("attractions", this.attractions);
+      console.log("attractions", this.attractions);
       this.displayMarker();
     },
     mapCenter() {
@@ -74,13 +94,21 @@ export default {
       container.style.height = `${size}vh`;
       this.map.relayout();
     },
-    makeMarker() {      
+    createMarkerImage(src, size) {
+      const markerImage = new kakao.maps.MarkerImage(src, size);
+      return markerImage;            
+    },
+    makeMarker() {           
+      var imageSize = new kakao.maps.Size(24, 36); 
       this.positions = [];
       this.attractions.forEach((attraction) => {
+        if (attraction.contentTypeId == 39)
+          console.log(this.imgSrc[attraction.contentTypeId]);
+        
         let obj = {};
         obj.title = attraction.title;
         obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
-
+        obj.image = this.createMarkerImage(this.imgSrc[attraction.contentTypeId], imageSize);
         this.positions.push(obj);
       });
     },
@@ -102,7 +130,7 @@ export default {
           map: this.map, // 마커를 표시할 지도
           position: position.latlng, // 마커를 표시할 위치
           title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          // image: position.image, // 마커의 이미지
+          image: position.image, // 마커의 이미지
           clickable: true,
         });
 

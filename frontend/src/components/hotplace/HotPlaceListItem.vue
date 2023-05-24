@@ -7,21 +7,19 @@
     text-variant="card-title"
   >
     <b-card-title class="align-bottom">{{ hotplaceItem.title }}</b-card-title>
-    <b-card-text class="like-view" v-if="userInfo && isLike" @click="unLike">
+    <b-card-text class="like" v-if="userInfo && isLike" @click="unLike">
       💗{{ likes }}
     </b-card-text>
-    <b-card-text
-      class="like-view"
-      v-else-if="userInfo && !isLike"
-      @click="doLike"
-    >
+    <b-card-text class="like" v-else-if="userInfo && !isLike" @click="doLike">
       🤍{{ likes }}
     </b-card-text>
-    <b-card-text class="like-view" v-else @click="goLogin"
+    <b-card-text class="like" v-else @click="goLogin"
       >🤍{{ likes }}
     </b-card-text>
-    <b-card-text class="like-view"> 👁‍🗨{{ hotplace.hit }} </b-card-text>
-    <b-button @click="moveHandler" class="card-button">자세히 보기</b-button>
+    <b-card-text class="like"> 👁‍🗨{{ hotplace.hit }} </b-card-text>
+    <div class="detail">
+      <b-button @click="moveHandler" class="card-button">자세히 보기</b-button>
+    </div>
   </b-card>
 </template>
 
@@ -181,15 +179,25 @@ export default {
   text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
 }
 
-.like-view {
+.like {
   color: #ffffff;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+  display: inline;
 }
-
 .card-button {
   background-color: white;
   color: #0f0f0f;
   box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
   border: 0px;
+  display: inline-block;
+}
+
+.card {
+  position: relative;
+}
+.detail {
+  position: absolute;
+  left: 40%;
+  bottom: 5%;
 }
 </style>

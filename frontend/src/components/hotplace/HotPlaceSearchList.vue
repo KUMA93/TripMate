@@ -5,7 +5,7 @@
     <b-td>{{ attraction.addr1 }} {{ attraction.addr2 }}</b-td>
     <b-td
       ><button class="btn btn-primary" @click="setHotplace">
-        선택 하기
+        선택
       </button></b-td
     >
   </b-tr>

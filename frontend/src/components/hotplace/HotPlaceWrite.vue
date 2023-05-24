@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container class="bv-example-row mt-3 text-center">
+    <b-container fluid class="bv-example-row mt-3 text-center">
       <b-row>
         <b-col>
           <b-row>
@@ -162,4 +162,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#trip-list{
+  height: 40vh;
+  overflow-y: scroll;
+}
+</style>

@@ -2,8 +2,8 @@
   <div>
     <b-container fluid>
       <div class="row">
-        <div class="col-3"></div>
-        <div class="col-1">
+        <div class="col-2"></div>
+        <div class="col-2">
           <b-form-select v-model="key" :options="keys"></b-form-select>
         </div>
         <div class="col-4">
@@ -16,10 +16,10 @@
             aria-controls="HotPlaceList"
           ></b-pagination>
         </div>
-        <div class="col-1">
+        <div class="col-2">
           <b-button variant="primary" @click="goWrite">핫플 등록</b-button>
         </div>
-        <div class="col-3"></div>
+        <div class="col-2"></div>
       </div>
       <div v-if="hotplaces.length > 0">
         <b-card-group columns>

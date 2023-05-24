@@ -1,5 +1,4 @@
 <template>
-  <div>
     <b-carousel
       id="carousel-fade"
       fade
@@ -8,8 +7,8 @@
       controls
       indicators
       background="#ababab"
-      img-width="1024"
-      img-height="480"
+      img-width="100%"
+      img-height="100%"
       style="text-shadow: 2px 2px 4px #333; overflow: hidden"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
@@ -26,9 +25,7 @@
 
         <template #img>
           <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
+            class="fill"
             src="@/assets/img/header-gamcheon.png"
             alt="image slot"
           />
@@ -46,9 +43,7 @@
         </div>
         <template #img>
           <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
+            class="fill"
             src="@/assets/img/cherryblossom.jpg"
             alt="image slot"
           />
@@ -66,9 +61,7 @@
         </div>
         <template #img>
           <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
+            class="fill"
             src="@/assets/img/Gyeongju-travel-information-intro.jpg"
             alt="image slot"
           />
@@ -86,16 +79,13 @@
         </div>
         <template #img>
           <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
+            class="fill"
             src="@/assets/img/nightview.png"
             alt="image slot"
           />
         </template>
       </b-carousel-slide>
     </b-carousel>
-  </div>
 </template>
 
 <script>
@@ -133,20 +123,12 @@ export default {
 };
 </script>
 
-<style>
-.img-container {
-  width: 1024;
-  height: 480;
-  overflow: hidden;
-  margin: 0 auto;
-  position: relative;
-}
-
-.img {
+<style scoped>
+.fill {
   width: 100%;
-  height: 100%;
+  height: 92vh;
+  background-position: center;
   object-fit: cover;
-  position: absolute;
 }
 
 .container {

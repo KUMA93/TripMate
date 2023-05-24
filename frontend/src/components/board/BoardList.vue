@@ -1,19 +1,21 @@
 <template>
-  <div>
+  <b-container>
     <div class="row">
-      <div class="col-2"></div>
       <div class="col-2">
         <b-form-select v-model="key" :options="keys"></b-form-select>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <b-form-input v-model="word" @keyup.enter="searchArticle" />
       </div>
-      <div class="col-2">
+      <div class="col-1">
         <b-button variant="primary" @click="searchArticle">검색</b-button>
+        </div>
+      <div class="col-4"></div>
+      <div class="col-2">
         <b-button variant="primary" @click="goWrite">게시글 등록</b-button>
       </div>
-      <div class="col-2"></div>
     </div>
+    <div class="mt-4"></div>
     <b-table
       id="BoardList"
       hover
@@ -41,7 +43,7 @@
       :per-page="10"
       aria-controls="BoardList"
     ></b-pagination>
-  </div>
+  </b-container>
 </template>
 
 <script>

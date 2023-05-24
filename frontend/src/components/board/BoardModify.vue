@@ -1,33 +1,33 @@
 <template>
-  <div><div>
-    <table class="table table-bordered">
-      <tr>
-        <th>게시글 번호</th><td id="articleNo" v-text="article.articleNo"></td>
-      </tr>
-      <tr>
-        <th>제목</th><td><input type="text" id="subject" refs="subject" v-model="article.subject"/></td>
-      </tr>
-      <tr>
-        <th>작성자</th><td><input type="text" id="userId" v-model="article.userId" readonly/></td>
-      </tr>
-      <tr>
-        <th colspan="2">내용</th>
-      </tr>
-      <tr>
-        <td colspan="2">
-        <textarea id="content" cols="46" rows="10" ref="content" v-model="article.content"></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-        <div >
-          <button class="btn btn-primary" @click="moveHandler">목록</button>
-          <button class="btn btn-primary" @click="updateHandler">수정</button>
-        </div>
-        </td>
-      </tr>
-    </table>
-  </div></div>
+  <b-container>
+    <h3 class="title">
+      <b-form-input 
+        class="board-input"
+        type="text" 
+        size="lg" 
+        placeholder="제목" 
+        id="subject" 
+        ref="subject" 
+        v-model="article.subject"></b-form-input>
+    </h3>
+    <div class="mt-4">
+    </div>
+    <hr> <!-- divider -->
+    <div class="mt-2 mb-2">
+      <b-form-textarea
+        class="board-input"
+        id="content"
+        ref="content"
+        v-model="article.content"
+        placeholder="내용을 입력하세요."
+      ></b-form-textarea>
+    </div>
+    <hr>
+    <div class="button-container">
+      <button  class="btn btn-secondary mr-3"  @click="moveHandler">취소</button>
+      <button  class="btn btn-primary"  @click="updateHandler">수정</button>
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -85,4 +85,16 @@ methods: {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#content {
+  height: 40vh;
+}
+.board-input {
+  color: #0f0f0f;
+}
+
+.button-container{
+  float: right;
+  clear: both;
+}
+</style>

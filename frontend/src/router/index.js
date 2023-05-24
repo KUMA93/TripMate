@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AppMain from '@/views/AppMain'
 import AppAttraction from '@/views/AppAttraction'
-import AppTripPlan from '@/views/AppTripPlan'
 import AppHotplace from '@/views/AppHotplace'
 import AppBoard from '@/views/AppBoard'
 import AppUser from '@/views/AppUser'
 import AppNotice from '@/views/AppNotice'
+import AppWeather from '@/views/AppWeather'
 
 import store from "@/store";
 
@@ -182,10 +182,10 @@ const routes = [
     ]
   },
   {
-    path: "/tripplan",
-    name: "AppTripPlan",
-    component: AppTripPlan,
-  },
+    path: "/weather",
+    name: "AppWeather",
+    component: AppWeather,
+  }
 ]
 
 const router = new VueRouter({

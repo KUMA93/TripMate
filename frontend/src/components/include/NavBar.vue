@@ -17,8 +17,8 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item><router-link class="nav-link" to="/attraction">지역별여행지</router-link></b-nav-item>
-        <b-nav-item><router-link class="nav-link" to="/tripplan">나의여행계획</router-link></b-nav-item>
         <b-nav-item><router-link class="nav-link" to="/hotplace">핫플자랑하기</router-link></b-nav-item>
+        <b-nav-item><router-link class="nav-link" to="/weather">지역별 날씨정보</router-link></b-nav-item>
         <b-nav-item><router-link class="nav-link" to="/board">여행정보공유</router-link></b-nav-item>
         <b-nav-item><router-link class="nav-link" to="/notice">공지사항</router-link></b-nav-item>
       </b-navbar-nav>

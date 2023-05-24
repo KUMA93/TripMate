@@ -4,6 +4,7 @@ import http from "@/api/http"
 import createPersistedState from "vuex-persistedstate";
 
 import UserStore from "@/store/modules/UserStore"
+import WeatherStore from "./modules/WeatherStore";
 
 Vue.use(Vuex)
 
@@ -95,9 +96,11 @@ export default new Vuex.Store({
     }
     ///////////////////////// Hotplace End //////////////////////////////////
   },
-  ///////////////////////// JWT 활용을 위한 모듈 ///////////////////////////////
   modules: {
+    ///////////////////////// JWT 활용을 위한 모듈 ///////////////////////////////
     UserStore,
+    ///////////////////////// 날씨 정보를 위한 모듈 /////////////////////////
+    WeatherStore,
   },
   ///////////////////////// 토큰 저장을 위한 sessionStorage 활용 //////////////////////////
   plugins: [

@@ -64,6 +64,8 @@ export default {
         .then(({ data }) => {
           console.log(data);
           this.article = data;
+          // 개행문자를 <br/> 태그로 대체
+          this.article.content = this.article.content.replace(/\n/g, "<br/>");
         })
         .catch((err) => {
           console.log(err);

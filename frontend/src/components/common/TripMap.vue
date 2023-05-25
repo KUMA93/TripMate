@@ -46,7 +46,6 @@ export default {
   },
   watch: {
     attractions() {
-      console.log("attractions", this.attractions);
       this.displayMarker();
     },
     mapCenter() {
@@ -74,7 +73,7 @@ export default {
       document.head.appendChild(script);
     },
     loadMap() {
-      console.log("mapCenter", this.mapCenter);
+      // console.log("mapCenter", this.mapCenter);
       const container = document.getElementById("map");
       const options = {
         center: new window.kakao.maps.LatLng(this.mapCenter.lat, this.mapCenter.lon),
@@ -97,12 +96,9 @@ export default {
       return markerImage;            
     },
     makeMarker() {           
-      var imageSize = new kakao.maps.Size(24, 36); 
+      var imageSize = new kakao.maps.Size(36, 36); 
       this.positions = [];
-      this.attractions.forEach((attraction) => {
-        if (attraction.contentTypeId == 39)
-          console.log(this.imgSrc[attraction.contentTypeId]);
-        
+      this.attractions.forEach((attraction) => {        
         let obj = {};
         obj.title = attraction.title;
         obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
@@ -131,17 +127,6 @@ export default {
           image: position.image, // 마커의 이미지
           clickable: true,
         });
-
-        // var iwContent = `<div style="padding:5px;">${position.title}</div>`;
-        // var infowindow = new kakao.maps.InfoWindow({
-        //   content: iwContent
-        // });
-
-        // // 마커에 마우스오버 이벤트를 등록합니다
-        // kakao.maps.event.addListener(marker, 'click', function() {
-        //   // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-        //     infowindow.open(this.map, marker);
-        // });
 
         this.markers.push(marker);
 

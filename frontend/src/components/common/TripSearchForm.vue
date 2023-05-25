@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import http from "@/api/attraction";
 import { mapActions } from "vuex";
 
 export default {

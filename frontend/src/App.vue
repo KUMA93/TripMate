@@ -32,12 +32,17 @@ export default {
   font-style: normal;
 }
 
+:root {
+  --textSize: 1rem;
+}
+
 #app {
   font-family: "SBAggroB";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  font-size: var(--textSize);
 }
 
 nav {

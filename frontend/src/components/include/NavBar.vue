@@ -50,6 +50,15 @@
               ></router-link
             ></b-nav-item
           >
+          <b-nav-item>
+            <button 
+              class="btn" 
+              :class="checked ? 'btn-primary' : 'btn-outline-primary'"
+              :value="checked" 
+              @click="onClickMode">
+              {{ btnText }}
+            </button>
+          </b-nav-item>
         </b-navbar-nav>
 
         <!-- after login -->
@@ -103,7 +112,10 @@ export default {
   name: "NavBar",
   components: {},
   data() {
-    return {};
+    return {
+      checked: false,
+      btnText: '돋보기 모드 켜기',
+    };
   },
   computed: {
     ...mapState(UserStore, ["isLogin", "userInfo"]),
@@ -127,6 +139,25 @@ export default {
     onClickMypage() {
       this.$router.push({ name: "mypage" });
     },
+
+
+    onClickMode() {
+      this.checked = !this.checked;
+      if (this.checked) {
+        this.btnText = '돋보기 모드 끄기';
+        this.textHandler(1.2);
+      }
+      else {
+        this.btnText = '돋보기 모드 켜기';
+        this.textHandler(1);
+      }
+    },
+
+    textHandler(size) {
+      document.documentElement.style.setProperty('--textSize', size + 'rem');
+      
+    },
+
   },
 };
 </script>

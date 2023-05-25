@@ -6,4 +6,5 @@
 ### GitLab
 * [SpringBoot](./backend/)
 * [Vue.js](./frontend/)
-* [DB schema & Diagrams](./schema/)
+* [DB schema](./schema/)
+* [PPT & Diagrams](./Docs/)

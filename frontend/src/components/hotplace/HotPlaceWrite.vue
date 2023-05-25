@@ -26,12 +26,13 @@
           <table class="table table-bordered table-content">
             <b-container>
               <h3>
-                <b-col class="title">선택한 장소</b-col>
+                <b-col class="place">선택한 장소</b-col>
 
-                <b-col class="place" v-if="this.selectedHotplace">
+                <b-col class="title" v-if="this.selectedHotplace">
                   {{ this.selectedHotplace.title }}
                 </b-col>
               </h3>
+              <hr />
               <h3 class="title">
                 <b-form-input
                   type="text"

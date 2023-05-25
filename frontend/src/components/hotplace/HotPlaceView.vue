@@ -16,6 +16,7 @@
         <h3 class="attraction-title">
           {{ attraction.title }}
         </h3>
+        <hr />
         <img
           :src="attraction?.first_image"
           alt="image"
@@ -24,6 +25,7 @@
       </div>
       <div class="mt-5 mb-5 col-6">
         <h3 class="title">{{ article.subject }}</h3>
+        <hr />
         <div v-html="article.content"></div>
       </div>
     </div>

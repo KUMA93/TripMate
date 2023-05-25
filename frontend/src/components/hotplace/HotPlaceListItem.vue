@@ -6,17 +6,18 @@
     img-alt="Card Image"
     text-variant="card-title"
   >
-    <b-card-title class="align-bottom">{{ hotplaceItem.title }}</b-card-title>
+  <div class="card-background"></div>
+    <b-card-title class="card-title align-bottom">{{ hotplaceItem.title }}</b-card-title>
     <b-card-text class="like" v-if="userInfo && isLike" @click="unLike">
-      💗{{ likes }}
+      <b-icon icon="heart-fill" variant="danger" class="mr-1"></b-icon>{{ likes }}
     </b-card-text>
     <b-card-text class="like" v-else-if="userInfo && !isLike" @click="doLike">
-      🤍{{ likes }}
+      <b-icon icon="heart" class="mr-1"></b-icon>{{ likes }}
     </b-card-text>
     <b-card-text class="like" v-else @click="goLogin"
-      >🤍{{ likes }}
+      ><b-icon icon="heart" class="mr-1"></b-icon>{{ likes }}
     </b-card-text>
-    <b-card-text class="like"> 👁‍🗨{{ hotplace.hit }} </b-card-text>
+    <b-card-text class="like"> <b-icon icon="book-half" class="mr-1"></b-icon>{{ hotplace.hit }} </b-card-text>
     <div class="detail">
       <b-button @click="moveHandler" class="card-button">자세히 보기</b-button>
     </div>
@@ -172,15 +173,21 @@ export default {
 
 <style scoped>
 .card-title {
+  position: relative;
   font-size: 1.2em;
   color: #ffffff;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .like {
+  position: relative;
   color: #ffffff;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
   display: inline;
+  z-index: 1;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .card-button {
   background-color: white;
@@ -197,6 +204,16 @@ export default {
 .card img {
   transition: all 0.2s linear;
 }
+.card-background {
+  background-image: linear-gradient(180deg, rgba(15,15,15,0.4) 0%, rgba(15,15,15,0.4) 40%, rgba(15,15,15,0.1) 60%, rgba(15,15,15,0) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
 .card:hover img {
   transform: scale(1.2);
 }

@@ -6,6 +6,9 @@
     <h5>체감온도 : {{ weatherInfo.feels_like }}°C</h5>
     <h5>습도 : {{ weatherInfo.humidity }}%</h5>
   </div>
+  <div class="container blank" v-else>
+    <h3>지역을 선택해주세요!</h3>
+  </div>
   </div>
 </template>
 
@@ -44,6 +47,10 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 24px;
+}
+
+.blank {
+  background-color: lightgray;
 }
 
 .temp {

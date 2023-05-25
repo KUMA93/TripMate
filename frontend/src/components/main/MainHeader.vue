@@ -1,91 +1,127 @@
 <template>
-    <b-carousel
-      id="carousel-fade"
-      fade
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      img-width="100%"
-      img-height="100%"
-      style="text-shadow: 2px 2px 4px #333; overflow: hidden"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- 지역별 여행지 검색 -->
-      <b-carousel-slide>
-        <div class="container">
-          <h1>지역별 여행지</h1>
-          <div class="">지역별 여행지를 검색하고 숨은 명소를 찾아보세요</div>
-          <b-button @click="attractionHandler" pill variant="outline-light">
-            자세히 보기</b-button
-          >
+  <b-carousel
+    id="carousel-fade"
+    fade
+    v-model="slide"
+    :interval="4000"
+    controls
+    indicators
+    background="#ababab"
+    img-width="100%"
+    img-height="100%"
+    style="text-shadow: 2px 2px 4px #333; overflow: hidden"
+    @sliding-start="onSlideStart"
+    @sliding-end="onSlideEnd"
+  >
+    <!-- 지역별 여행지 검색 -->
+    <b-carousel-slide>
+      <div>
+        <h1 class="main-title">지역별 여행지</h1>
+        <br />
+        <div class="main-text">
+          지역별 여행지를 검색하고 숨은 명소를 찾아보세요
         </div>
+        <br /><br /><br /><br /><br /><br />
+        <b-button
+          size="lg"
+          class="main-button"
+          @click="attractionHandler"
+          pill
+          variant="outline-light"
+        >
+          자세히 보기
+        </b-button>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+      </div>
 
-        <template #img>
-          <img
-            class="fill"
-            src="@/assets/img/header-gamcheon.png"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
+      <template #img>
+        <img
+          class="fill"
+          src="@/assets/img/header-gamcheon.png"
+          alt="image slot"
+        />
+      </template>
+    </b-carousel-slide>
 
-      <!-- 지역별 날씨 정보 -->
-      <b-carousel-slide>
-        <div class="container">
-          <h1>지역별 날씨 정보</h1>
-          <div class="">지역별 날씨를 알아보세요</div>
-          <b-button @click="weatherHandler" pill variant="outline-light"
-            >자세히 보기</b-button
-          >
+    <!-- 지역별 날씨 정보 -->
+    <b-carousel-slide>
+      <div>
+        <h1 class="main-title">지역별 날씨 정보</h1>
+        <br />
+        <div class="main-text">지역별 날씨를 알아보세요</div>
+        <br /><br /><br /><br /><br /><br />
+        <b-button
+          size="lg"
+          class="main-button"
+          @click="weatherHandler"
+          pill
+          variant="outline-light"
+        >
+          자세히 보기
+        </b-button>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+      </div>
+      <template #img>
+        <img
+          class="fill"
+          src="@/assets/img/cherryblossom.jpg"
+          alt="image slot"
+        />
+      </template>
+    </b-carousel-slide>
+
+    <!-- 핫플자랑하기 -->
+    <b-carousel-slide>
+      <div>
+        <h1 class="main-title">핫플자랑하기</h1>
+        <br />
+        <div class="main-text">
+          혼자 알고 있기 아까운 핫플레이스들을 자랑해주세요
         </div>
-        <template #img>
-          <img
-            class="fill"
-            src="@/assets/img/cherryblossom.jpg"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
+        <br /><br /><br /><br /><br /><br />
+        <b-button
+          size="lg"
+          class="main-button"
+          @click="hotplaceHandler"
+          pill
+          variant="outline-light"
+        >
+          자세히 보기
+        </b-button>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+      </div>
+      <template #img>
+        <img
+          class="fill"
+          src="@/assets/img/Gyeongju-travel-information-intro.jpg"
+          alt="image slot"
+        />
+      </template>
+    </b-carousel-slide>
 
-      <!-- 핫플자랑하기 -->
-      <b-carousel-slide>
-        <div class="container">
-          <h1>핫플자랑하기</h1>
-          <div class="">혼자 알고 있기 아까운 핫플레이스들을 자랑해주세요</div>
-          <b-button @click="hotplaceHandler" pill variant="outline-light"
-            >자세히 보기</b-button
-          >
-        </div>
-        <template #img>
-          <img
-            class="fill"
-            src="@/assets/img/Gyeongju-travel-information-intro.jpg"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
-
-      <!-- 여행정보공유 -->
-      <b-carousel-slide>
-        <div class="container">
-          <h1>여행정보공유</h1>
-          <div class="">다른 사람들과 여행 정보를 공유해보세요</div>
-          <b-button @click="boardHandler" pill variant="outline-light"
-            >자세히 보기</b-button
-          >
-        </div>
-        <template #img>
-          <img
-            class="fill"
-            src="@/assets/img/nightview.png"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+    <!-- 여행정보공유 -->
+    <b-carousel-slide>
+      <div>
+        <h1 class="main-title">여행정보공유</h1>
+        <br />
+        <div class="main-text">다른 사람들과 여행 정보를 공유해보세요</div>
+        <br /><br /><br /><br /><br /><br />
+        <b-button
+          size="lg"
+          class="main-button"
+          @click="boardHandler"
+          pill
+          variant="outline-light"
+        >
+          자세히 보기
+        </b-button>
+        <br /><br /><br /><br /><br /><br /><br /><br />
+      </div>
+      <template #img>
+        <img class="fill" src="@/assets/img/nightview.png" alt="image slot" />
+      </template>
+    </b-carousel-slide>
+  </b-carousel>
 </template>
 
 <script>
@@ -131,8 +167,17 @@ export default {
   object-fit: cover;
 }
 
+.main-title {
+  font-size: 9vh;
+}
+
+.main-text {
+  font-size: 2vh;
+}
+
 .container {
   position: relative;
   bottom: 50%;
+  height: 100%;
 }
 </style>

@@ -1,5 +1,7 @@
 package com.ssafy.trip.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,14 @@ public class NoticeRestController {
 		List<NoticeDto> notices = noticeService.searchAll(bean);
 		
 		Map<String, Object> result = new HashMap<String, Object>();
+		
+		for (NoticeDto notice : notices) {
+			LocalDateTime d = LocalDateTime.parse(notice.getRegisterTime(),
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			
+			notice.setRegisterTime(d.format(DateTimeFormatter.ofPattern("YY.MM.dd")));
+		}
+		
 		result.put("notices", notices);
 		result.put("page", bean);
 		if (notices.isEmpty() || notices == null) {

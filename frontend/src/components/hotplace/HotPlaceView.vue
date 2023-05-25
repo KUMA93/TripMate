@@ -1,56 +1,54 @@
 <template>
-  <div>
-    <img :src="attraction?.first_image" alt="image" />
-    <h3>{{ attraction.title }}</h3>
-    <table class="table table-bordered">
-      <tr>
-        <th>제목</th>
-        <td v-text="article.subject"></td>
-      </tr>
-      <tr>
-        <th>작성자</th>
-        <td v-text="article.userId"></td>
-      </tr>
-      <tr>
-        <th>조회수</th>
-        <td v-text="article.hit"></td>
-      </tr>
-      <tr>
-        <th>좋아요</th>
-        <td v-text="article.likes"></td>
-      </tr>
-      <tr>
-        <th colspan="2">내용</th>
-      </tr>
-      <tr>
-        <th colspan="2"><pre v-text="article.content"></pre></th>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <div>
-            <button class="btn btn-primary" @click="moveHandler">목록</button>
-            <button
-              class="btn btn-primary"
-              @click="updateHandler"
-              v-if="userInfo && userInfo.id == article.userId"
-            >
-              수정
-            </button>
-            <button
-              class="btn btn-primary"
-              @click="removeHandler"
-              v-if="
-                userInfo &&
-                (userInfo.id == article.userId || userInfo.position == 'admin')
-              "
-            >
-              삭제
-            </button>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <b-container>
+    <div class="mt-4">
+      <b-avatar class="mr-2" variant="info" size="2rem"></b-avatar>
+      <span class="mr-4">{{ article.userId }}</span>
+      <span class="registerTime">{{ article.registerTime }}</span>
+      <span class="hit"
+        ><b-icon icon="book" variant="primary"></b-icon> {{ article.hit }}</span
+      >
+      <span class="likes"
+        ><b-icon icon="heart-fill" variant="danger"></b-icon> {{ article.like }}
+      </span>
+    </div>
+    <div class="row">
+      <div class="mt-5 mb-5 col-6">
+        <h3 class="attraction-title">
+          {{ attraction.title }}
+        </h3>
+        <img
+          :src="attraction?.first_image"
+          alt="image"
+          class="attraction-img"
+        />
+      </div>
+      <div class="mt-5 mb-5 col-6">
+        <h3 class="title">{{ article.subject }}</h3>
+        <div v-html="article.content"></div>
+      </div>
+    </div>
+    <hr />
+    <div class="button-container">
+      <button class="btn btn-primary mr-3" @click="moveHandler">목록</button>
+      <button
+        class="btn btn-primary mr-3"
+        @click="updateHandler"
+        v-if="userInfo && userInfo.id == article.userId"
+      >
+        수정
+      </button>
+      <button
+        class="btn btn-primary"
+        @click="removeHandler"
+        v-if="
+          userInfo &&
+          (userInfo.id == article.userId || userInfo.position == 'admin')
+        "
+      >
+        삭제
+      </button>
+    </div>
+  </b-container>
 </template>
 
 
@@ -86,6 +84,8 @@ export default {
         .then(({ data }) => {
           console.log("디테일 글 정보", data);
           this.article = data;
+          // 개행문자를 <br/> 태그로 대체
+          this.article.content = this.article.content.replace(/\n/g, "<br/>");
           this.getAttractionInfo();
         })
         .catch((err) => {
@@ -132,4 +132,36 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+* {
+  text-align: left;
+}
+
+.attraction-img {
+  width: 100%;
+}
+
+.registerTime {
+  color: #0f0f0f78;
+}
+
+.button-container {
+  float: right;
+  clear: both;
+}
+
+.hit {
+  justify-items: center;
+  align-items: center;
+  float: right;
+  color: #0f0f0f78;
+}
+
+.likes {
+  justify-items: center;
+  align-items: center;
+  float: right;
+  color: #0f0f0f78;
+  padding-right: 3vh;
+}
+</style>

@@ -4,10 +4,8 @@
       <b-row>
         <b-col>
           <b-row>
-            <b-col>
-              <!-- 검색 폼 -->
-              <trip-search-form></trip-search-form>
-            </b-col>
+            <!-- 검색 폼 -->
+            <trip-search-form></trip-search-form>
           </b-row>
           <b-row class="mt-3"></b-row>
           <b-row>
@@ -25,52 +23,57 @@
           </b-col>
         </b-col>
         <b-col>
-          <table class="table table-bordered">
-            <tr>
-              <td>선택한 장소</td>
-              <td v-if="this.selectedHotplace">
-                {{ this.selectedHotplace.title }}
-              </td>
-              <td v-else>{{ this.attraction.title }}</td>
-            </tr>
-            <tr>
-              <td>제목</td>
-              <td>
-                <input type="text" v-model="article.subject" ref="subject" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">내용</td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <textarea
+          <table class="table table-bordered table-content">
+            <b-container>
+              <h3>
+                <b-col class="title">선택한 장소</b-col>
+                <b-col class="place" v-if="this.selectedHotplace">
+                  {{ this.selectedHotplace.title }}
+                </b-col>
+                <b-col class="place" v-else>
+                  {{ this.attraction.title }}
+                </b-col>
+                <b-col hidden>{{ this.attraction.contentId }}</b-col>
+              </h3>
+              <h3 class="title">
+                <b-form-input
+                  type="text"
+                  size="lg"
+                  placeholder="제목"
+                  id="subject"
+                  ref="subject"
+                  v-model="article.subject"
+                ></b-form-input>
+              </h3>
+              <div class="mt-4"></div>
+              <hr />
+              <!-- divider -->
+              <div class="mt-2 mb-2">
+                <b-form-textarea
                   id="content"
-                  cols="46"
-                  rows="10"
                   ref="content"
                   v-model="article.content"
-                ></textarea>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <div class="text-center">
-                  <button class="btn btn-primary" @click="updateHandler">
-                    수정
-                  </button>
-                  <button class="btn btn-primary" @click="moveHandler">
-                    목록
-                  </button>
-                </div>
-              </td>
-            </tr>
+                  placeholder="내용을 입력하세요."
+                ></b-form-textarea>
+              </div>
+              <hr />
+              <div class="button-container">
+                <button class="btn btn-secondary mr-3" @click="moveHandler">
+                  취소
+                </button>
+                <button class="btn btn-primary" @click="updateHandler">
+                  등록
+                </button>
+              </div>
+            </b-container>
           </table>
         </b-col>
       </b-row>
     </b-container>
   </div>
 </template>
+
+
 
 <script>
 import http from "@/api/http";
@@ -152,7 +155,6 @@ export default {
     updateHandler() {
       let err = false;
       let msg = "";
-      console.log(this.selectedHotplace.contentId);
       !this.article.subject &&
         ((msg = "글 제목을 입력해주세요"),
         (err = true),
@@ -167,7 +169,10 @@ export default {
         this.article.userId = this.userInfo.id;
         if (this.selectedHotplace) {
           this.article.contentId = this.selectedHotplace.contentId;
+        } else {
+          this.article.contentId = this.attraction.contentId;
         }
+        console.log(this.article.contentId);
 
         http
           .put("rest/hotplace", this.article)
@@ -191,5 +196,23 @@ export default {
 #trip-list {
   height: 40vh;
   overflow-y: scroll;
+}
+
+#content {
+  height: 40vh;
+}
+
+.table-content {
+  border: none;
+}
+
+.place {
+  font-size: 70%;
+  padding-bottom: 2vh;
+}
+
+.button-container {
+  float: right;
+  clear: both;
 }
 </style>

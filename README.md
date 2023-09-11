@@ -25,8 +25,9 @@
 <img src="./Docs/메인.PNG" width="600px">
 
 <br/>
-[전체 기능 유튜브 시연 영상](https://www.youtube.com/watch?v=dXFn7_I_KJE)
 
+
+[전체 기능 유튜브 시연 영상](https://www.youtube.com/watch?v=dXFn7_I_KJE)
 
 
 ## 아키텍처
